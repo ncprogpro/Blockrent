@@ -105,6 +105,7 @@
               </template>
               <v-date-picker
                 v-model="leaseApplicationDetails.contractStartDate"
+                scrollable
                 no-title
                 light
                 @input="menu1 = false"
@@ -149,7 +150,13 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="leaseApplicationDetails.contractEndDate" no-title light @input="menu2 = false"></v-date-picker>
+              <v-date-picker
+                v-model="leaseApplicationDetails.contractEndDate"
+                scrollable
+                no-title
+                light
+                @input="menu2 = false"
+              ></v-date-picker>
             </v-menu>
           </v-flex>
           <v-flex xs12 sm6>
@@ -309,7 +316,7 @@ export default {
             otherParty: this.otherParty
           },
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
           }
         })
