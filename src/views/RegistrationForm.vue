@@ -1,5 +1,6 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-form ref="form" lazy-validation>
+    <loading :active.sync="isLoading" :is-full-page="true" loader="bars" color="orange"> </loading>
     <p class="font-weight-bold text-xs-center">
       Register your security deposit application<br />
       by filling out the form below
@@ -249,21 +250,40 @@
       <v-layout row>
         <span class="company-name">Blockrent</span>
         <v-spacer class="hidden-sm-and-down"></v-spacer>
-        <v-btn class="primary--text custom-round" to="/">Cancel</v-btn>
-        <v-btn class="secondary--text custom-round" color="primary" @click="validate">Submit</v-btn>
+        <v-btn class="primary--text custom-round" @click="dialog = true">
+          Cancel
+        </v-btn>
+        <v-btn class="secondary--text custom-round" color="primary" @click="validate">
+          Submit
+        </v-btn>
       </v-layout>
     </v-container>
+    <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline">Use Google's location service?</v-card-title>
+        <v-card-text
+          >Let Google help apps determine location. This means sending anonymous location data to Google, even when no
+          apps are running.</v-card-text
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat @click="dialog = false">Disagree</v-btn>
+          <v-btn color="green darken-1" flat @click="dialog = false">Agree</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-form>
 </template>
 
 <script>
-import axios from 'axios'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
   name: 'RegistrationForm',
   data() {
     return {
-      valid: false,
+      dialog: false,
       personalDetails: {
         firstName: '',
         lastName: '',
@@ -294,42 +314,34 @@ export default {
       securityDepositRules: [v => !!v || 'Security Deposit Amount is required'],
       menu1: false,
       menu2: false,
-      phone: 'phone'
+      phone: 'phone',
+      isLoading: false
     }
+  },
+  components: {
+    Loading
   },
   methods: {
     async submit() {
-      console.log('Submitting...')
-      console.log({
-        registrationForm: {
-          personalDetails: this.personalDetails,
-          leaseApplicationDetails: this.leaseApplicationDetails,
-          otherParty: this.otherParty
-        }
-      })
-
-      axios
-        .post('http://127.0.0.1:8000/api/v1/registerApplication/', {
-          registrationForm: {
-            personalDetails: this.personalDetails,
-            leaseApplicationDetails: this.leaseApplicationDetails,
-            otherParty: this.otherParty
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          }
-        })
-        .then(function(response) {
-          console.log(response)
-        })
-        .catch(function(error) {
-          console.log(error)
-        })
-      //
-      // console.log(response)
-
-      this.$router.push('thanks')
+      if (this.$refs.form.validate()) {
+        this.isLoading = true
+        this.$store
+          .dispatch('registerApplication', {
+            registrationForm: {
+              personalDetails: this.personalDetails,
+              leaseApplicationDetails: this.leaseApplicationDetails,
+              otherParty: this.otherParty
+            }
+          })
+          .then(() => {
+            this.isLoading = false
+            this.$router.push('/')
+          })
+          .catch(err => {
+            this.isLoading = false
+            console.log(err)
+          })
+      }
     },
     validate() {
       if (this.$refs.form.validate()) {
@@ -372,5 +384,41 @@ p {
   -moz-border-radius: 10px;
   border-radius: 10px;
   border: 2px solid #fb8c00;
+}
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

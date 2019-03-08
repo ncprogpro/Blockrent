@@ -2,39 +2,51 @@
   <v-container fill-height>
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4>
-        <v-card class="elevation-12">
-          <v-toolbar dark color="primary">
-            <v-toolbar-title>Login Form</v-toolbar-title>
-          </v-toolbar>
+        <v-card class="elevation-12" color="#FBBA23">
+          <v-flex xl12 sm4 offset-sm4>
+            <v-responsive>
+              <v-img :src="require('@/assets/undraw_for_sale_viax.svg')"></v-img>
+            </v-responsive>
+          </v-flex>
           <v-card-text>
             <v-form ref="form" v-model="valid" lazy-validation>
-              <v-text-field
-                prepend-icon="mdi-account"
-                name="email"
-                label="Email"
-                type="email"
-                v-model="email"
-                :rules="emailRules"
-                required
-              >
-              </v-text-field>
-              <v-text-field
-                prepend-icon="mdi-lock"
-                name="password"
-                label="Password"
-                id="password"
-                type="password"
-                required
-                v-model="password"
-                :rules="passwordRules"
-              >
-              </v-text-field>
+              <v-flex xs12 sm10 offset-sm1 py-2 mt-5>
+                <v-label>Username:</v-label>
+                <v-text-field
+                  v-model="email"
+                  :rules="emailRules"
+                  solo
+                  single-line
+                  required
+                  light
+                  color="grey darken-3"
+                  clearable
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 sm10 offset-sm1 py-2>
+                <v-label>Password:</v-label>
+                <v-text-field
+                  v-model="password"
+                  type="password"
+                  solo
+                  single-line
+                  required
+                  :rules="passwordRules"
+                  light
+                  color="grey darken-3"
+                >
+                </v-text-field>
+              </v-flex>
+              <v-flex xs12 sm10 offset-sm1>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn class="white--text" dark :disabled="!valid" flat="flat" @click="submit">
+                    Login
+                  </v-btn>
+                </v-card-actions>
+              </v-flex>
             </v-form>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" :disabled="!valid" @click="submit">Login</v-btn>
-          </v-card-actions>
         </v-card>
       </v-flex>
     </v-layout>
@@ -57,12 +69,27 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('userLogin', {
-          email: this.email,
-          password: this.password
-        })
+        this.$store
+          .dispatch('userLogin', {
+            email: this.email,
+            password: this.password
+          })
+          .then(() => this.$router.push('/'))
+          .catch(err => console.log(err))
       }
     }
   }
 }
 </script>
+
+<style scoped>
+.custom-round.v-input .v-input__slot {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background-color: white;
+}
+.custom-round {
+  color: white;
+}
+</style>
