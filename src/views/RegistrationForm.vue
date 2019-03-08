@@ -250,7 +250,7 @@
       <v-layout row>
         <span class="company-name">Blockrent</span>
         <v-spacer class="hidden-sm-and-down"></v-spacer>
-        <v-btn class="primary--text custom-round" @click="dialog = true">
+        <v-btn class="primary--text custom-round" to="/">
           Cancel
         </v-btn>
         <v-btn class="secondary--text custom-round" color="primary" @click="validate">
@@ -258,18 +258,28 @@
         </v-btn>
       </v-layout>
     </v-container>
-    <v-dialog v-model="dialog" persistent max-width="290">
+    <v-dialog v-model="dialog" persistent max-width="700">
       <v-card>
-        <v-card-title class="headline">Use Google's location service?</v-card-title>
-        <v-card-text
-          >Let Google help apps determine location. This means sending anonymous location data to Google, even when no
-          apps are running.</v-card-text
-        >
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="dialog = false">Disagree</v-btn>
-          <v-btn color="green darken-1" flat @click="dialog = false">Agree</v-btn>
-        </v-card-actions>
+        <v-card-title class="headline primary--text">Awesome!</v-card-title>
+        <v-layout row wrap align-center>
+          <v-flex xs12 sm7 class="subheading">
+            <v-card-text>
+              Thanks for submitting your application, We've just sent a confirmation email to both the Tenant & Landlord
+              / Property owner.
+            </v-card-text>
+            <v-card-text>
+              Once your application is confirmed, you can manage your application & security deposits.
+            </v-card-text>
+          </v-flex>
+          <v-flex xs12 sm5>
+            <v-responsive>
+              <v-img :src="require('@/assets/undraw_confirmation.svg')"></v-img>
+            </v-responsive>
+          </v-flex>
+        </v-layout>
+        <div class="text-xs-center">
+          <v-btn class="black--text" color="primary" @click="dialog = false">OK</v-btn>
+        </div>
       </v-card>
     </v-dialog>
   </v-form>
@@ -335,7 +345,8 @@ export default {
           })
           .then(() => {
             this.isLoading = false
-            this.$router.push('/')
+            this.dialog = true
+            //this.$router.push('/')
           })
           .catch(err => {
             this.isLoading = false
