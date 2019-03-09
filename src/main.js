@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import './app-filters'
 import Axios from 'axios'
+import './assets/css/global.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios

@@ -273,12 +273,12 @@
           </v-flex>
           <v-flex xs12 sm5>
             <v-responsive>
-              <v-img :src="require('@/assets/undraw_confirmation.svg')"></v-img>
+              <v-img :src="require('@/assets/img/undraw_confirmation.svg')"></v-img>
             </v-responsive>
           </v-flex>
         </v-layout>
         <div class="text-xs-center">
-          <v-btn class="black--text" color="primary" @click="dialog = false">OK</v-btn>
+          <v-btn class="black--text" color="primary" @click="platform = false">OK</v-btn>
         </div>
       </v-card>
     </v-dialog>
@@ -293,7 +293,7 @@ export default {
   name: 'RegistrationForm',
   data() {
     return {
-      dialog: false,
+      platform: false,
       personalDetails: {
         firstName: '',
         lastName: '',

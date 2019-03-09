@@ -2,10 +2,10 @@
   <v-container fill-height>
     <v-layout align-center justify-center>
       <v-flex xs12 sm8 md4>
-        <v-card class="elevation-12" color="#FBBA23">
+        <v-card class="elevation-12" color="yground">
           <v-flex xl12 sm4 offset-sm4>
             <v-responsive>
-              <v-img :src="require('@/assets/undraw_for_sale_viax.svg')"></v-img>
+              <v-img :src="require('@/assets/img/undraw_for_sale_viax.svg')"></v-img>
             </v-responsive>
           </v-flex>
           <v-card-text>

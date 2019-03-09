@@ -7,7 +7,7 @@
         <td class="text-xs-right">{{ props.item.date.toDateString() }}</td>
         <td class="text-xs-right">{{ props.item.status }}</td>
         <td class="text-xs-right">
-          <v-btn class="secondary--text" color="primary" @click.stop="dialog = true">View</v-btn>
+          <v-btn class="secondary--text" color="primary" @click.stop="platform = true">View</v-btn>
         </td>
       </template>
     </v-data-table>
@@ -29,7 +29,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" flat @click="dialog = false">
+            <v-btn color="primary" flat @click="platform = false">
               I accept
             </v-btn>
           </v-card-actions>
@@ -58,7 +58,7 @@ export default {
         { text: 'Status', value: 'string' },
         { text: '', value: 'carbs' }
       ],
-      dialog: false
+      platform: false
     }
   },
   methods: {

@@ -16,7 +16,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="dialog = false">
+          <v-btn color="primary" flat @click="platform = false">
             I accept
           </v-btn>
         </v-card-actions>
@@ -29,7 +29,7 @@
 export default {
   name: 'Dialog',
   props: {
-    dialog: Boolean,
+    platform: Boolean,
     title: String,
     text: String
   }
