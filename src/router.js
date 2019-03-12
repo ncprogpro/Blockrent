@@ -33,6 +33,12 @@ export default new Router({
       component: () => import('./views/BankDetailsForm')
     },
     {
+      path: '/registration/:applicationid/confirm/',
+      name: 'confirm',
+      props: true,
+      component: () => import('./views/ConfirmApplication.vue')
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard

@@ -8,6 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
+    username: '',
+    apiKey: '',
     isAuthenticated: false,
     application: {},
     status: ''
@@ -23,6 +25,15 @@ export default new Vuex.Store({
     },
     setIsAuthenticated(state, payload) {
       state.isAuthenticated = payload
+    },
+    setLoggedInfo(state, payload) {
+      state.username = payload.username
+      state.apiKey = payload.api_key
+      if (state.apiKey) {
+        Vue.prototype.$http.defaults.headers.common['Authorization'] = state.username + ':' + state.apiKey
+      }
+      console.log(state.username)
+      console.log(state.apiKey)
     },
     auth_request(state) {
       state.status = 'loading'
@@ -47,19 +58,28 @@ export default new Vuex.Store({
       //     router.push('/')
       //   })
     },
-    userLogin({ commit }, { email, password }) {
-      // firebase
-      //   .auth()
-      //   .signInWithEmailAndPassword(email, password)
-      //   .then(user => {
-      //     commit('setUser', user)
-      //     commit('setIsAuthenticated', true)
-      //     router.push('/about')
-      //   })
-      //   .catch(() => {
-      //     commit('setUser', null)
-      //     commit('setIsAuthenticated', false)
-      //   })
+    userLogin({ commit }, userInfo) {
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        console.log(userInfo)
+        axios({
+          url: 'http://127.0.0.1:8000/api/v1/users/login/',
+          data: userInfo,
+          method: 'POST'
+        })
+          .then(resp => {
+            console.log(resp.data)
+            commit('setLoggedInfo', resp.data)
+            commit('setIsAuthenticated', true)
+            resolve(resp)
+          })
+          .catch(err => {
+            commit('auth_error')
+            commit('setLoggedInfo', {'username': null, 'api_key': null})
+            commit('setIsAuthenticated', false)
+            reject(err)
+          })
+      })
     },
     userLogout({ commit }) {
       // firebase
@@ -85,6 +105,17 @@ export default new Vuex.Store({
           })
           .catch(err => {
             commit('auth_error')
+            reject(err)
+          })
+      })
+    },
+    getApplicationDetail({ commit }, app) {
+      return new Promise((resolve, reject) => {
+        axios({ url: 'http://127.0.0.1:8000/api/v1/applications/' + app.appId + '/', method: 'GET' })
+          .then(resp => {
+            resolve(resp)
+          })
+          .catch(err => {
             reject(err)
           })
       })

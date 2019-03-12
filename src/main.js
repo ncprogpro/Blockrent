@@ -10,9 +10,10 @@ import './assets/css/global.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = Axios
-const token = localStorage.getItem('token')
-if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+const username = localStorage.getItem('username')
+const apiKey = localStorage.getItem('apiKey')
+if (apiKey) {
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = username + ':' + apiKey
 }
 
 new Vue({

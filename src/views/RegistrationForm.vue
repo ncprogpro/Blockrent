@@ -258,7 +258,7 @@
         </v-btn>
       </v-layout>
     </v-container>
-    <v-dialog v-model="dialog" persistent max-width="700">
+    <v-dialog v-model="platform" persistent max-width="700">
       <v-card>
         <v-card-title class="headline primary--text">Awesome!</v-card-title>
         <v-layout row wrap align-center>
@@ -345,7 +345,7 @@ export default {
           })
           .then(() => {
             this.isLoading = false
-            this.dialog = true
+            this.platform = true
             //this.$router.push('/')
           })
           .catch(err => {
@@ -356,9 +356,12 @@ export default {
     },
     validate() {
       if (this.$refs.form.validate()) {
-        this.snackbar = true
         this.submit()
       }
+    },
+    closeAlert() {
+      this.platform = false
+      this.$router.push('/')
     }
   }
 }

@@ -67,7 +67,7 @@ export default {
     }
   },
   methods: {
-    submit() {
+    async submit() {
       if (this.$refs.form.validate()) {
         this.$store
           .dispatch('userLogin', {
