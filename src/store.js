@@ -30,10 +30,10 @@ export default new Vuex.Store({
       state.username = payload.username
       state.apiKey = payload.api_key
       if (state.apiKey) {
-        Vue.prototype.$http.defaults.headers.common['Authorization'] = state.username + ':' + state.apiKey
+        localStorage.setItem('username', payload.username)
+        localStorage.setItem('apiKey', payload.api_key)
+        Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
       }
-      console.log(state.username)
-      console.log(state.apiKey)
     },
     auth_request(state) {
       state.status = 'loading'
@@ -62,11 +62,12 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('auth_request')
         console.log(userInfo)
-        axios({
-          url: 'http://127.0.0.1:8000/api/v1/users/login/',
-          data: userInfo,
-          method: 'POST'
-        })
+        Vue.prototype
+          .$http({
+            url: 'http://127.0.0.1:8000/api/v1/users/login/',
+            data: userInfo,
+            method: 'POST'
+          })
           .then(resp => {
             console.log(resp.data)
             commit('setLoggedInfo', resp.data)
@@ -99,7 +100,8 @@ export default new Vuex.Store({
     registerApplication({ commit }, application) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({ url: 'http://127.0.0.1:8000/api/v1/registerApplication/', data: application, method: 'POST' })
+        Vue.prototype
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/registerApplication/', data: application, method: 'POST' })
           .then(resp => {
             resolve(resp)
           })
@@ -111,7 +113,8 @@ export default new Vuex.Store({
     },
     getApplicationDetail({ commit }, app) {
       return new Promise((resolve, reject) => {
-        axios({ url: 'http://127.0.0.1:8000/api/v1/applications/' + app.appId + '/', method: 'GET' })
+        Vue.prototype
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/applications/' + app.appId + '/', method: 'GET' })
           .then(resp => {
             resolve(resp)
           })

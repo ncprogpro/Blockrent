@@ -69,6 +69,24 @@ export default new Router({
       component: () => import('./views/Register.vue')
     },
     {
+      path: '/home',
+      name: 'home',
+      redirect: 'home/list',
+      component: () => import('./container/Dashboard.vue'),
+      children: [
+        {
+          path: 'list',
+          name: 'list',
+          component: () => import('./views/ListView.vue')
+        },
+        {
+          path: 'detail',
+          name: 'detail',
+          component: () => import('./views/DetailView.vue')
+        }
+      ]
+    },
+    {
       path: '*',
       component: NotFound,
       meta: {

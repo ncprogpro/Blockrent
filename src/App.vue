@@ -1,7 +1,5 @@
 <template>
   <v-app dark>
-    <app-toolbar></app-toolbar>
-
     <v-content transition="slide-x-transition">
       <router-view></router-view>
     </v-content>
@@ -9,14 +7,17 @@
 </template>
 
 <script>
-import AppToolbar from '@/components/AppToolbar'
+//import AppToolbar from '@/components/AppToolbar'
+//import SideMenu from '@/components/SideMenu'
 
 export default {
   name: 'App',
   components: {
-    AppToolbar
+    //SideMenu
   }
 }
 </script>
 
-<style></style>
+<style lang="css">
+@import '~font-awesome/css/font-awesome.css';
+</style>

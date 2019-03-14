@@ -10,7 +10,8 @@ Vue.use(Vuetify, {
     secondary: colors.shades.black,
     lighten2: colors.orange.lighten1,
     lime: colors.lime,
-    yground: '#FBBA23'
+    yground: '#FBBA23',
+    leftsidebc: '#f0f3f7'
   },
   options: {
     customProperties: true

@@ -13,7 +13,7 @@ Vue.prototype.$http = Axios
 const username = localStorage.getItem('username')
 const apiKey = localStorage.getItem('apiKey')
 if (apiKey) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = username + ':' + apiKey
+  Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + username + ':' + apiKey
 }
 
 new Vue({

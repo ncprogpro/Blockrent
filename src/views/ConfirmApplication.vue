@@ -16,6 +16,7 @@
               :rules="nameRules"
               class="custom-round"
               border-color="primary"
+              readonly
               solo
               single-line
               outline
@@ -28,6 +29,7 @@
               v-model="personalDetails.lastName"
               :rules="nameRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
@@ -41,6 +43,7 @@
               :rules="phoneNumberRules"
               class="custom-round"
               :mask="phone"
+              readonly
               solo
               single-line
               outline
@@ -53,6 +56,7 @@
               v-model="personalDetails.email"
               :rules="emailRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
@@ -72,6 +76,7 @@
               v-model="leaseApplicationDetails.contractNo"
               :rules="contractNoRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
@@ -80,38 +85,17 @@
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Lease Contract Start Date:</v-label>
-            <v-menu
-              v-model="menu1"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              lazy
-              transition="scale-transition"
-              offset-y
-              full-width
-              max-width="290px"
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="leaseApplicationDetails.contractStartDate"
-                  :rules="dateRules"
-                  class="custom-round"
-                  solo
-                  single-line
-                  outline
-                  required
-                  readonly
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="leaseApplicationDetails.contractStartDate"
-                scrollable
-                no-title
-                light
-                @input="menu1 = false"
-              ></v-date-picker>
-            </v-menu>
+            <v-text-field
+              v-model="leaseApplicationDetails.contractStartDate"
+              :rules="dateRules"
+              class="custom-round"
+              solo
+              single-line
+              outline
+              required
+              readonly
+              v-on="on"
+            ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Property Address:</v-label>
@@ -119,6 +103,7 @@
               v-model="leaseApplicationDetails.address"
               :rules="addressRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
@@ -127,38 +112,17 @@
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Lease Contract End Date</v-label>
-            <v-menu
-              v-model="menu2"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              lazy
-              transition="scale-transition"
-              offset-y
-              full-width
-              max-width="290px"
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="leaseApplicationDetails.contractEndDate"
-                  :rules="dateRules"
-                  class="custom-round"
-                  solo
-                  single-line
-                  outline
-                  required
-                  readonly
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="leaseApplicationDetails.contractEndDate"
-                scrollable
-                no-title
-                light
-                @input="menu2 = false"
-              ></v-date-picker>
-            </v-menu>
+            <v-text-field
+              v-model="leaseApplicationDetails.contractEndDate"
+              :rules="dateRules"
+              class="custom-round"
+              solo
+              single-line
+              outline
+              required
+              readonly
+              v-on="on"
+            ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Security Deposit Amount:</v-label>
@@ -167,6 +131,7 @@
               :rules="securityDepositRules"
               class="custom-round"
               type="number"
+              readonly
               min="1"
               solo
               single-line
@@ -181,6 +146,7 @@
               :rules="premiseNoRules"
               class="custom-round"
               type="number"
+              readonly
               solo
               single-line
               outline
@@ -200,6 +166,7 @@
               v-model="otherParty.firstName"
               :rules="nameRules"
               class="custom-round"
+              readonly
               solo
               singline-line
               outline
@@ -212,6 +179,7 @@
               v-model="otherParty.lastName"
               :rules="nameRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
@@ -225,6 +193,7 @@
               :rules="phoneNumberRules"
               class="custom-round"
               :mask="phone"
+              readonly
               solo
               single-line
               outline
@@ -237,6 +206,7 @@
               v-model="otherParty.email"
               :rules="emailRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
@@ -251,37 +221,16 @@
         <span class="company-name">Blockrent</span>
         <v-spacer class="hidden-sm-and-down"></v-spacer>
         <v-btn class="primary--text custom-round" to="/">
-          Cancel
+          Edit
+        </v-btn>
+        <v-btn color="red" class="custom-round red" outline @click="decline">
+          Decline
         </v-btn>
         <v-btn class="secondary--text custom-round" color="primary" @click="validate">
-          Submit
+          Confirm
         </v-btn>
       </v-layout>
     </v-container>
-    <v-dialog v-model="platform" persistent max-width="700">
-      <v-card>
-        <v-card-title class="headline primary--text">Awesome!</v-card-title>
-        <v-layout row wrap align-center>
-          <v-flex xs12 sm7 class="subheading">
-            <v-card-text>
-              Thanks for submitting your application, We've just sent a confirmation email to both the Tenant & Landlord
-              / Property owner.
-            </v-card-text>
-            <v-card-text>
-              Once your application is confirmed, you can manage your application & security deposits.
-            </v-card-text>
-          </v-flex>
-          <v-flex xs12 sm5>
-            <v-responsive>
-              <v-img :src="require('@/assets/img/undraw_confirmation.svg')"></v-img>
-            </v-responsive>
-          </v-flex>
-        </v-layout>
-        <div class="text-xs-center">
-          <v-btn class="black--text" color="primary" @click="platform = false">OK</v-btn>
-        </div>
-      </v-card>
-    </v-dialog>
   </v-form>
 </template>
 
@@ -294,7 +243,6 @@ export default {
   props: ['applicationid'],
   data() {
     return {
-      platform: false,
       personalDetails: {
         firstName: '',
         lastName: '',
@@ -333,8 +281,8 @@ export default {
     Loading
   },
   async created() {
+    /*
     this.isLoading = true
-    console.log(this.applicationid)
     this.$store
       .dispatch('getApplicationDetail', {
         appId: this.applicationid
@@ -343,6 +291,11 @@ export default {
         this.isLoading = false
         console.log(resp)
       })
+      .catch(err => {
+        console.log(err)
+        this.$router.push('/')
+      })
+    */
   },
   methods: {
     async submit() {
@@ -358,12 +311,10 @@ export default {
           })
           .then(() => {
             this.isLoading = false
-            this.platform = true
             //this.$router.push('/')
           })
           .catch(err => {
             this.isLoading = false
-            console.log(err)
           })
       }
     },
@@ -371,6 +322,24 @@ export default {
       if (this.$refs.form.validate()) {
         this.submit()
       }
+    },
+    async decline() {
+      this.isLoading = true
+      this.$store
+        .dispatch('declineApplication', {
+          registrationForm: {
+            personalDetails: this.personalDetails,
+            leaseApplicationDetails: this.leaseApplicationDetails,
+            otherParty: this.otherParty
+          }
+        })
+        .then(() => {
+          this.isLoading = false
+          //this.$router.push('/')
+        })
+        .catch(err => {
+          this.isLoading = false
+        })
     }
   }
 }

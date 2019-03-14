@@ -8,3 +8,7 @@
 .landing-page .container {
     height: 100%;
 }
+
+.dashboard-toolbar .v-toolbar__content {
+    padding-left: 0;
+}

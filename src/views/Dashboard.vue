@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="grey">
     <h1 class="primary--text">Your Properties</h1>
-    <v-container grid-list-lg>
+    <v-container grid-list-lg light>
       <v-layout row wrap>
         <v-flex xs12 sm6 v-for="(property, idx) in properties" :key="idx">
           <v-card>
