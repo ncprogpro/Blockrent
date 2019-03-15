@@ -28,11 +28,8 @@
       </v-list-tile>
       <v-toolbar-side-icon @click.stop="mini = !mini"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
-      <v-text-field light solo append-icon="fa-search" placeholder="Type Keyword..."></v-text-field>
       <v-badge overlap>
-        <template v-slot:badge>
-          <span>0</span>
-        </template>
+        <span slot="badge">0</span>
         <v-btn icon>
           <v-icon>mdi-bell</v-icon>
         </v-btn>
@@ -41,7 +38,7 @@
         <v-icon size="24">fa-user</v-icon>
       </v-btn>
       <v-btn icon>
-        <v-icon>mdi-face-profile</v-icon>
+        <v-icon size="24">fa-book</v-icon>
       </v-btn>
       <v-btn icon>
         <v-icon>mdi-settings</v-icon>

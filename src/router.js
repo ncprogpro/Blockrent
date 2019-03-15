@@ -80,7 +80,7 @@ export default new Router({
           component: () => import('./views/ListView.vue')
         },
         {
-          path: 'detail',
+          path: 'detail/:applicationId',
           name: 'detail',
           component: () => import('./views/DetailView.vue')
         }

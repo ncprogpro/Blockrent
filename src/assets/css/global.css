@@ -12,3 +12,18 @@
 .dashboard-toolbar .v-toolbar__content {
     padding-left: 0;
 }
+
+.search-application .v-input__control .v-input__slot{
+    margin-bottom: 0;
+    border-radius: 25px !important;
+    -webkit-border-radius: 25px !important;
+    -moz-border-radius: 25px !important;
+}
+
+.search-toolbar button {
+    margin: 0 8px;
+    height: 48px;
+    -webkit-border-radius: 25px !important;
+    -moz-border-radius: 25px !important;
+    border-radius: 25px !important;
+}

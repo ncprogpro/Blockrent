@@ -14,6 +14,8 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.14",
     "font-awesome": "^4.7.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
     "vue": "^2.5.22",
     "vue-loading-overlay": "^3.2.0",
     "vue-router": "^3.0.1",

@@ -19,7 +19,6 @@
                       v-model="personalDetails.firstName"
                       :rules="nameRules"
                       class="custom-round"
-                      border-color="primary"
                       single-line
                       outline
                       required
@@ -72,7 +71,7 @@
                       v-model="otherParty.firstName"
                       :rules="nameRules"
                       class="custom-round"
-                      singline-line
+                      single-line
                       outline
                       required
                     ></v-text-field>
@@ -473,13 +472,13 @@ export default {
       }
     },
     validateUser() {
-      //if (this.$refs.formUser.validate())
+      if (this.$refs.formUser.validate())
       {
         this.step = 2
       }
     },
     validateLease() {
-      //if (this.$refs.formLease.validate())
+      if (this.$refs.formLease.validate())
       {
         this.depositDialog = true
       }

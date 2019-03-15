@@ -1,0 +1,39 @@
+.swiper-container {
+  background-color: #000;
+}
+.swiper-slide {
+  background-size: cover;
+  background-position: center;
+  &.slide-1 {
+    background-image:url('/static/images/surmon-1.jpg');
+  }
+  &.slide-2 {
+    background-image:url('/static/images/surmon-6.jpg');
+  }
+  &.slide-3 {
+    background-image:url('/static/images/surmon-8.jpg');
+  }
+  &.slide-4 {
+    background-image:url('/static/images/surmon-9.jpg');
+  }
+  &.slide-5 {
+    background-image:url('/static/images/surmon-10.jpg');
+  }
+}
+.gallery-top {
+  height: 80%!important;
+  width: 100%;
+}
+.gallery-thumbs {
+  height: 20%!important;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+.gallery-thumbs .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+.gallery-thumbs .swiper-slide-active {
+  opacity: 1;
+}

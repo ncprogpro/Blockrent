@@ -58,7 +58,9 @@ export default {
         { text: 'Status', value: 'string' },
         { text: '', value: 'carbs' }
       ],
-      platform: false
+      platform: false,
+      dialog: false,
+      title: ''
     }
   },
   methods: {
