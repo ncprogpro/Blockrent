@@ -1,44 +1,58 @@
 <template>
   <v-app>
     <v-toolbar flat color="grey" class="search-toolbar">
-      <v-text-field
-        xs12
-        sm5
-        light
-        solo
-        append-icon="fa-search"
-        placeholder="Type Keyword..."
-        class="search-application"
-      ></v-text-field>
-      <v-btn color="yground" class="black--text">
-        <v-icon left dark>mdi-plus</v-icon>
-        Submit an Application
-      </v-btn>
+      <div class="headline yground--text pl-3">{{ property.address }}</div>
       <v-spacer></v-spacer>
+      <div class="headline">
+        <v-card-text title class="white--text border pa-2">
+          Security Deposit Held: {{ property.depositValue }}
+        </v-card-text>
+      </div>
+      <v-spacer></v-spacer>
+      <v-menu offset-x>
+        <template v-slot:activator="{ on }">
+          <v-btn color="yground" class="white--text" v-on="on">
+            Action
+            <v-icon right dark>mdi-menu-down</v-icon>
+          </v-btn>
+        </template>
+        <v-card class="border-style" flat>
+          <v-list>
+            <v-list-tile v-for="(item, index) in drop_actions" :key="index" @click="">
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-card>
+      </v-menu>
     </v-toolbar>
-    <v-container>
-      <div class="title primary--text mb-5">{{ property.address }}</div>
+    <v-container fluid>
       <v-layout row wrap>
         <v-flex xs12 sm6>
-          <detail-carousel />
+          <v-container fluid>
+            <v-card flat>
+              <div class="card-content">
+                <detail-carousel :starting-image="0" :images="images"></detail-carousel>
+              </div>
+            </v-card>
+          </v-container>
         </v-flex>
         <v-flex xs12 sm6>
-          <v-container>
-            <div class="display-1 primary--text mb-2">Application Details</div>
-            <v-layout row wrap>
-              <v-flex xs12 sm6>
+          <v-container fluid>
+            <div class="display-1 yground--text mb-2">Application Details</div>
+            <v-layout row wrap pb-3>
+              <v-flex xs12 sm6 pb-2>
                 <div class="font-weight-bold">Ejari Contract/Certificate No:</div>
                 <div>{{ property.contractNo }}</div>
               </v-flex>
-              <v-flex xs12 sm6>
+              <v-flex xs12 sm6 pb-2>
                 <div class="font-weight-bold">Premise No (Dewa):</div>
                 <div>{{ property.premiseNo }}</div>
               </v-flex>
-              <v-flex xs12 sm6>
+              <v-flex xs12 sm6 pb-2>
                 <div class="font-weight-bold">Contract Period:</div>
                 <div>{{ property.leaseStartDate.toDateString() }} to {{ property.leaseEndDate.toDateString() }}</div>
               </v-flex>
-              <v-flex xs12 sm6>
+              <v-flex xs12 sm6 pb-2>
                 <div class="font-weight-bold">Landlord/Property Owner:</div>
                 <div>{{ property.ownerName }}</div>
               </v-flex>
@@ -48,9 +62,8 @@
               </v-flex>
             </v-layout>
             <v-layout row>
+              <v-btn class="secondary--text" color="yground" large>Update</v-btn>
               <v-spacer class="hidden-sm-and-down"></v-spacer>
-              <v-btn class="secondary--text" color="primary" large>Request</v-btn>
-              <v-btn class="secondary--text" color="primary" large>Withdraw</v-btn>
             </v-layout>
           </v-container>
         </v-flex>
@@ -72,6 +85,7 @@ export default {
       property: {
         propertyId: 1,
         address: '24 / 1 Ward Avenue Potts Point NSW 2011',
+        depositValue: '$20000',
         image: 'https://pmcvariety.files.wordpress.com/2018/07/bradybunchhouse_sc11.jpg?w=1000&h=563&crop=1',
         contractNo: '123456789',
         premiseNo: '123456789',
@@ -102,12 +116,35 @@ export default {
             status: 'waiting'
           }
         ]
-      }
+      },
+      images: [
+        {
+          id: '1',
+          big: require('@/images/p1.jpeg'),
+          thumb: require('@/images/thumbs/p1.jpeg')
+        },
+        {
+          id: '2',
+          big: require('@/images/p2.jpeg'),
+          thumb: require('@/images/thumbs/p2.jpeg')
+        },
+        {
+          id: '3',
+          big: require('@/images/p3.jpeg'),
+          thumb: require('@/images/thumbs/p3.jpeg')
+        },
+        {
+          id: '4',
+          big: require('@/images/p4.jpeg'),
+          thumb: require('@/images/thumbs/p4.jpeg')
+        }
+      ],
+      drop_actions: [{ title: 'Top-up' }, { title: 'Submit Request' }]
     }
   }
 }
 </script>
 
 <style scoped>
-
+@import "../assets/css/carousel.css";
 </style>

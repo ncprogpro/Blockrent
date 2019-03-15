@@ -8,13 +8,58 @@
         placeholder="Type Keyword..."
         class="search-application"
       ></v-text-field>
-      <v-btn color="yground" class="black--text">
+      <v-btn color="yground" round class="black--text round" to="/registration">
         <v-icon left dark>mdi-plus</v-icon>
         Submit an Application
       </v-btn>
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-container grid-list-lg light fluid>
+      <v-toolbar>
+        <div class="text-xs-center">
+          <v-menu v-model="filter" :close-on-content-click="false" offset-y>
+            <v-btn color="indigo" dark slot="activator">Filter</v-btn>
+            <v-card class="multi-step-menu">
+              <v-list>
+                <v-list-tile @click="">
+                  <v-list-tile-action>
+                    <v-list-tile-title>Custom Filter</v-list-tile-title>
+                  </v-list-tile-action>
+                </v-list-tile>
+                <v-menu offset-x>
+                  <v-list-tile slot="activator">
+                    <v-list-tile-title>Property Type:</v-list-tile-title>
+                  </v-list-tile>
+                  <v-list dense>
+                    <v-list-tile v-for="(property, idx) in propertyTypes" :key="idx" @click="">
+                      <v-list-tile-title>{{ property.name }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+                <v-menu offset-x>
+                  <v-list-tile slot="activator">
+                    <v-list-tile-title>Property Size:</v-list-tile-title>
+                  </v-list-tile>
+                  <v-list dense>
+                    <v-list-tile v-for="(property, idx) in propertySIzes" :key="idx" @click="">
+                      <v-list-tile-title>{{ property.name }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
+                <v-list-tile v-for="(item, idx) in filter_list" :key="idx" @click="">
+                  <v-list-tile-action>
+                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </v-list>
+              <v-card-actions>
+                <v-btn round color="yground">Save Filter</v-btn>
+                <v-btn round color="yground">Apply Filter</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
+        </div>
+      </v-toolbar>
       <v-layout row wrap>
         <v-flex xs12 v-for="(property, idx) in properties" :key="idx">
           <v-card tile flat class="card-border">
@@ -130,6 +175,7 @@ export default {
   name: 'ListView',
   data() {
     return {
+      filter: false,
       properties: [
         {
           propertyId: 1,
@@ -156,7 +202,67 @@ export default {
           applicationStatus: 'Application Disable',
           lastModified: new Date()
         }
-      ]
+      ],
+      filter_list: [
+        {
+          name: 'Tenant Name:',
+          value: 'Ameen Ramadan'
+        },
+        {
+          name: 'Owner Name:',
+          value: 'John Kazal'
+        },
+        {
+          name: 'Contract Start Date:',
+          value: '10-10-2018'
+        },
+        {
+          name: 'Contract End Date:',
+          value: '11-3-2020'
+        },
+        {
+          name: 'Region / Area / Address:',
+          value: 'Ward Avenue'
+        }
+      ],
+      propertyTypes: [
+        {
+          name: 'None',
+          value: 0
+        },
+        {
+          name: 'Residential',
+          value: 1
+        },
+        {
+          name: 'Industrial',
+          value: 2
+        },
+        {
+          name: 'Commercial',
+          value: 3
+        }
+      ],
+      propertySIzes: [
+        {
+          name: 'None',
+          value: 0
+        },
+        {
+          name: '100m2 - 200m2',
+          value: 1
+        },
+        {
+          name: '200m2 - 500m2',
+          value: 2
+        },
+        {
+          name: '500m2 - 1000m2',
+          value: 3
+        }
+      ],
+      tenantNames: ['Ameen Ramadan', 'Taras Woronjanski', 'Bart Fart'],
+      ownerNames: ['John Kazal', 'Taras Woronjanski', 'Bart Fart']
     }
   },
   methods: {

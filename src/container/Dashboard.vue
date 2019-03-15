@@ -1,18 +1,18 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app light>
-    <v-navigation-drawer v-model="drawer" :mini-variant="mini" hide-overlay app clipped dark>
-      <v-list>
-        <v-list-tile>
+    <v-navigation-drawer v-model="drawer" :mini-variant="mini" hide-overlay app clipped dark stateless>
+      <v-list dense>
+        <v-list-tile to="/registration">
           <v-list-tile-action>
-            <v-icon>mdi-checkbox-marked-outline</v-icon>
+            <v-icon class="yground--text">mdi-checkbox-marked-outline</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>Submit an Application</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile>
+        <v-list-tile to="/home/list">
           <v-list-tile-action>
-            <v-icon>mdi-file-document-box-outline</v-icon>
+            <v-icon class="yground--text">mdi-file-document-box-outline</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>My Applications</v-list-tile-title>
@@ -26,7 +26,7 @@
           <v-img :src="require('@/assets/img/Dashboard_logo.svg')"></v-img>
         </v-list-tile-avatar>
       </v-list-tile>
-      <v-toolbar-side-icon @click.stop="mini = !mini"></v-toolbar-side-icon>
+      <v-toolbar-side-icon @click.stop="mini = !mini" class="yground--text"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
       <v-badge overlap>
         <span slot="badge">0</span>

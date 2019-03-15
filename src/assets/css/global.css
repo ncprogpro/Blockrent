@@ -20,10 +20,40 @@
     -moz-border-radius: 25px !important;
 }
 
-.search-toolbar button {
+.search-toolbar button.round {
     margin: 0 8px;
     height: 48px;
     -webkit-border-radius: 25px !important;
     -moz-border-radius: 25px !important;
     border-radius: 25px !important;
+}
+
+.search-toolbar .border {
+    border: 1px solid #FBBA23;
+}
+
+.border-style.v-card {
+    border-color: #FBBA23;
+    color: #FBBA23;
+    border-top: 4px solid ;
+    border-right: 5px solid;
+    border-left: 2px solid;
+}
+
+.update-table tbody tr{
+    border: 0 !important;
+}
+
+.update-table tbody td {
+    border: 1px solid #FBBA23;
+}
+
+.update-table table {
+    width: fit-content !important;
+    background: transparent !important;
+}
+
+.multi-step-menu .v-menu,
+.multi-step-menu .v-menu div[role=listitem]{
+    width: 100%;
 }
