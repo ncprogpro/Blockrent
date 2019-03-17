@@ -20,7 +20,7 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar class="dashboard-toolbar" clipped-left fixed app>
+    <v-toolbar class="dashboard-toolbar" clipped-left clipped-right fixed app>
       <v-list-tile avatar>
         <v-list-tile-avatar>
           <v-img :src="require('@/assets/img/Dashboard_logo.svg')"></v-img>
@@ -30,7 +30,7 @@
       <v-spacer></v-spacer>
       <v-badge overlap>
         <span slot="badge">0</span>
-        <v-btn icon>
+        <v-btn icon @click="rightDrawer = true">
           <v-icon>mdi-bell</v-icon>
         </v-btn>
       </v-badge>
@@ -47,7 +47,42 @@
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-toolbar>
-    <router-view></router-view>
+    <v-navigation-drawer v-model="rightDrawer" app right clipped dark class="update-bar">
+      <v-flex pl-3 style="min-height: 100%;">
+        <v-list class="left-border">
+          <template>
+            <v-list-tile>
+              <v-list-tile-action>
+                <v-list-tile-title>
+                  <span class="text-xs-justify">UPDATES</span>
+                </v-list-tile-title>
+              </v-list-tile-action>
+            </v-list-tile>
+          </template>
+          <v-divider></v-divider>
+          <v-card flat>
+            <v-layout row wrap>
+              <v-flex xs12 v-for="item in updates" class="bottom-border right-border">
+                <v-card flat>
+                  <v-layout justify-space-between>
+                    <v-card-title>
+                      {{ item.name }}
+                      {{ item.text }}
+                    </v-card-title>
+                    <v-card-actions>
+                      <a>View</a>
+                    </v-card-actions>
+                  </v-layout>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-list>
+      </v-flex>
+    </v-navigation-drawer>
+    <template>
+      <router-view></router-view>
+    </template>
   </v-app>
 </template>
 
@@ -57,8 +92,21 @@ export default {
   data() {
     return {
       drawer: true,
+      rightDrawer: false,
       mini: true,
-      right: null
+      right: null,
+      updates: [
+        {
+          name: 'Ameen Ramadan',
+          text: 'has deposited 3000AED',
+          last_modified: '1 hours ago'
+        },
+        {
+          name: 'John Kazal',
+          text: 'has requestd for a 3000AED top-up',
+          last_modified: '2 hours ago'
+        }
+      ]
     }
   }
 }

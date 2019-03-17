@@ -18,7 +18,10 @@
       <v-toolbar>
         <div class="text-xs-center">
           <v-menu v-model="filter" :close-on-content-click="false" offset-y>
-            <v-btn color="indigo" dark slot="activator">Filter</v-btn>
+            <v-btn slot="activator" flat>
+              Filter
+              <v-icon right dark>mdi-menu-down</v-icon>
+            </v-btn>
             <v-card class="multi-step-menu">
               <v-list>
                 <v-list-tile @click="">
@@ -41,23 +44,45 @@
                     <v-list-tile-title>Property Size:</v-list-tile-title>
                   </v-list-tile>
                   <v-list dense>
-                    <v-list-tile v-for="(property, idx) in propertySIzes" :key="idx" @click="">
+                    <v-list-tile v-for="(property, idx) in propertySizes" :key="idx" @click="">
                       <v-list-tile-title>{{ property.name }}</v-list-tile-title>
                     </v-list-tile>
                   </v-list>
                 </v-menu>
                 <v-list-tile v-for="(item, idx) in filter_list" :key="idx" @click="">
-                  <v-list-tile-action>
-                    <v-list-tile-title>{{ item.name }}</v-list-tile-title>
-                  </v-list-tile-action>
+                  <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+                </v-list-tile>
+                <v-menu offset-x max-width="290px" min-width="290px">
+                  <v-list-tile slot="activator">
+                    <v-list-tile-title>Contact Start Date:</v-list-tile-title>
+                  </v-list-tile>
+                  <v-date-picker scrollable no-title light></v-date-picker>
+                </v-menu>
+                <v-menu offset-x max-width="290px" min-width="290px">
+                  <v-list-tile slot="activator">
+                    <v-list-tile-title>Contact End Date:</v-list-tile-title>
+                  </v-list-tile>
+                  <v-date-picker scrollable no-title light></v-date-picker>
+                </v-menu>
+                <v-list-tile @click="addressForm = true">
+                  <v-list-tile-title>Region / Area / Address</v-list-tile-title>
                 </v-list-tile>
               </v-list>
               <v-card-actions>
-                <v-btn round color="yground">Save Filter</v-btn>
+                <v-btn round color="yground" @click="saveFilter = true">Save Filter</v-btn>
                 <v-btn round color="yground">Apply Filter</v-btn>
               </v-card-actions>
             </v-card>
           </v-menu>
+          <v-menu v-model="filter" :close-on-content-click="false" offset-y>
+            <v-btn slot="activator" flat>
+              Sort
+              <v-icon right dark>mdi-menu-down</v-icon>
+            </v-btn>
+          </v-menu>
+          <div style="display: inline-block;">
+            <input-tag v-model="tags" class="filter-tagging"></input-tag>
+          </div>
         </div>
       </v-toolbar>
       <v-layout row wrap>
@@ -167,15 +192,70 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-dialog v-model="addressForm" persistent max-width="500">
+      <v-card light style="border: solid 1px #FBBA23;">
+        <div align="right">
+          <v-btn icon @click="addressForm = false" class="yground--text">
+            <v-icon>mdi-close-circle-outline</v-icon>
+          </v-btn>
+        </div>
+        <v-layout row wrap align-center pb-3 pl-3 pr-3>
+          <v-flex xs12>
+            <v-card-title class="headline">Region / Area / Address:</v-card-title>
+            <v-card-actions>
+              <v-text-field single-line outline class="custom-round"></v-text-field>
+            </v-card-actions>
+          </v-flex>
+          <v-btn color="yground" round @click="addressForm = false">
+            Save
+          </v-btn>
+          <v-btn class="yground black--text" outline round @click="addressForm = false">
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-layout>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="saveFilter" persistent max-width="500">
+      <v-card light style="border: solid 1px #FBBA23;">
+        <div align="right">
+          <v-btn icon @click="saveFilter = false" class="yground--text">
+            <v-icon>mdi-close-circle-outline</v-icon>
+          </v-btn>
+        </div>
+        <v-layout row wrap align-center pb-3 pl-3 pr-3>
+          <v-flex xs12>
+            <v-card-title class="headline">Name of Filter:</v-card-title>
+            <v-card-actions>
+              <v-text-field single-line outline class="custom-round"></v-text-field>
+            </v-card-actions>
+          </v-flex>
+          <v-btn color="yground" round @click="saveFilter = false">
+            Save
+          </v-btn>
+          <v-btn class="yground black--text" outline round @click="saveFilter = false">
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-layout>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
 <script>
+import InputTag from 'vue-input-tag'
 export default {
   name: 'ListView',
+  components: {
+    InputTag
+  },
   data() {
     return {
       filter: false,
+      addressForm: false,
+      saveFilter: false,
+      tags: ["Residential", "Ameen Ramadan", "10-10-2018 - 11-3-2020"],
       properties: [
         {
           propertyId: 1,
@@ -213,14 +293,6 @@ export default {
           value: 'John Kazal'
         },
         {
-          name: 'Contract Start Date:',
-          value: '10-10-2018'
-        },
-        {
-          name: 'Contract End Date:',
-          value: '11-3-2020'
-        },
-        {
           name: 'Region / Area / Address:',
           value: 'Ward Avenue'
         }
@@ -243,7 +315,7 @@ export default {
           value: 3
         }
       ],
-      propertySIzes: [
+      propertySizes: [
         {
           name: 'None',
           value: 0

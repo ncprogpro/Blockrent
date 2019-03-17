@@ -57,3 +57,58 @@
 .multi-step-menu .v-menu div[role=listitem]{
     width: 100%;
 }
+
+.filter-tagging {
+    border: none !important;;
+    background: none !important;;
+}
+
+.filter-tagging .input-tag {
+    color: #000 !important;
+    border: 1px solid #FBBA23 !important;;
+    background-color: #FBBA23 !important;;
+    -webkit-border-radius: 10px !important;;
+    -moz-border-radius: 10px !important;;
+    border-radius: 20px !important;;
+}
+
+.filter-tagging .vue-input-tag-wrapper {
+    background: none !important;
+    border: none !important;
+}
+
+.update-bar {
+    border-width: 1px;
+    border-color: #FBBA23;
+}
+
+.update-bar .left-border{
+    min-height: 100%;
+    border-left: solid;
+    border-width: 1px;
+    border-color: #FBBA23;
+}
+
+.update-bar .top-border{
+    border-top: solid;
+    border-width: 1px;
+    border-color: #FBBA23;
+}
+
+.update-bar .right-border{
+    border-right: solid;
+    border-width: 1px;
+    border-color: #FBBA23;
+}
+
+.update-bar .bottom-border{
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #FBBA23;
+}
+
+.update-bar div[role=listitem]{
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: #FBBA23;
+}
