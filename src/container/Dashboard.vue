@@ -30,7 +30,7 @@
       <v-spacer></v-spacer>
       <v-badge overlap>
         <span slot="badge">0</span>
-        <v-btn icon @click="rightDrawer = true">
+        <v-btn icon @click="rightDrawer = !rightDrawer">
           <v-icon>mdi-bell</v-icon>
         </v-btn>
       </v-badge>
