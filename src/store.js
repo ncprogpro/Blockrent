@@ -16,7 +16,7 @@ export default new Vuex.Store({
   },
   getters: {
     isAuthenticated(state) {
-      return state.user !== null && state.user !== undefined
+      return state.user !== '' && state.user !== ''
     }
   },
   mutations: {
@@ -32,9 +32,16 @@ export default new Vuex.Store({
 
       localStorage.setItem('username', payload.username)
       localStorage.setItem('apiKey', payload.api_key)
-      console.log(payload.username)
-      console.log(payload.api_key)
       Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
+    },
+    clearLoginInfo(state) {
+      state.username = ''
+      state.apiKey = ''
+      state.isAuthenticated = false
+      localStorage.setItem('username', '')
+      localStorage.setItem('apiKey', '')
+      Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
+      router.push('/')
     },
     auth_request(state) {
       state.status = 'loading'
@@ -75,8 +82,7 @@ export default new Vuex.Store({
           })
           .catch(err => {
             commit('auth_error')
-            commit('setLoggedInfo', {'username': '', 'api_key': ''})
-            commit('setIsAuthenticated', false)
+            commit('clearLoginInfo')
             reject(err)
           })
       })
@@ -90,14 +96,12 @@ export default new Vuex.Store({
             method: 'GET'
           })
           .then(resp => {
-            commit('setLoggedInfo', {'username': '', 'api_key': ''})
-            commit('setIsAuthenticated', false)
+            commit('clearLoginInfo')
             resolve(resp)
           })
           .catch(err => {
             commit('auth_error')
-            commit('setLoggedInfo', {'username': '', 'api_key': ''})
-            commit('setIsAuthenticated', false)
+            commit('clearLoginInfo')
             reject(err)
           })
       })
@@ -112,6 +116,24 @@ export default new Vuex.Store({
           })
           .catch(err => {
             commit('auth_error')
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
+            reject(err)
+          })
+      })
+    },
+    getApplicationList({commit}) {
+      return new Promise((resolve, reject) => {
+        Vue.prototype
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/applications/', method: 'GET' })
+          .then(resp => {
+            resolve(resp)
+          })
+          .catch(err => {
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
             reject(err)
           })
       })
@@ -124,6 +146,9 @@ export default new Vuex.Store({
             resolve(resp)
           })
           .catch(err => {
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
             reject(err)
           })
       })

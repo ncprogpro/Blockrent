@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <loading :active.sync="isLoading" :is-full-page="true" loader="bars" color="orange"> </loading>
     <v-toolbar flat color="grey" class="search-toolbar">
       <v-text-field xs12 sm5
         light
@@ -86,13 +87,13 @@
         </div>
       </v-toolbar>
       <v-layout row wrap>
-        <v-flex xs12 v-for="(property, idx) in properties" :key="idx">
+        <v-flex xs12 v-for="(property, idx) in applications" :key="idx">
           <v-card tile flat class="card-border">
             <v-container fluid>
               <v-layout row wrap>
                 <v-flex xs12 sm4 md3 lg2>
                   <v-card-text max-height="150px">
-                    <img :src="property.image" alt="" width="100%"/>
+                    <img :src="no_image" alt="" width="100%" />
                   </v-card-text>
                 </v-flex>
                 <v-flex xs12 sm8 md9 lg10>
@@ -103,9 +104,9 @@
                       </v-flex>
                       <v-flex xs12 sm6 md3 justify-end align-end>
                         <v-layout align-end justify-end>
-                          <v-btn flat @click="viewProperty(property)" class="primary--text flat-remove-padding"
-                            >View Application</v-btn
-                          >
+                          <v-btn flat @click="viewProperty(property)" class="primary--text flat-remove-padding">
+                            View Application&nbsp;<i class="fa fa-chevron-circle-right"></i>
+                          </v-btn>
                         </v-layout>
                       </v-flex>
                     </v-layout>
@@ -114,7 +115,7 @@
                         <v-container>
                           <v-layout column align-end justify-end>
                             <div class="font-weight-bold text-right" align="right">Ejari Contract/Certificate No.:</div>
-                            <div align="right">{{ property.contractNo }}</div>
+                            <div align="right">{{ property.ejari_no }}</div>
                           </v-layout>
                         </v-container>
                       </v-flex>
@@ -122,7 +123,7 @@
                         <v-container text-align="right">
                           <v-layout column align-end justify-end>
                             <div class="font-weight-bold" align="right">Tenant name:</div>
-                            <div align="right">{{ property.tenantName }}</div>
+                            <div align="right">{{ property.tenant_name }}</div>
                           </v-layout>
                         </v-container>
                       </v-flex>
@@ -131,7 +132,7 @@
                           <v-layout column align-end justify-end>
                             <div class="font-weight-bold" align="right">Contract Period:</div>
                             <div align="right">
-                              {{ property.leaseStartDate.toDateString() }} to {{ property.leaseEndDate.toDateString() }}
+                              {{ property.start_date }} to {{ property.end_date }}
                             </div>
                           </v-layout>
                         </v-container>
@@ -140,8 +141,8 @@
                         <v-container>
                           <v-layout column align-end justify-end>
                             <span class="font-weight-bold">Status: </span>
-                            <span class="text-capitalize">{{ property.depositStatus.toString() }}</span>
-                            <span v-if="property.depositStatus === 'Deposit Paid'">
+                            <span class="text-capitalize">{{ property.deposit_holding }}</span>
+                            <span v-if="property.deposit_holding === 'Deposit Paid'">
                               <v-icon class="mx-1" color="green">mdi-checkbox-marked-circle</v-icon>
                             </span>
                             <span v-else>
@@ -160,27 +161,27 @@
             <v-container fluid>
               <v-layout row wrap>
                 <v-flex xs12 sm4>
-                  <v-card-text>{{ property.lastModified.toDateString() }}</v-card-text>
+                  <v-card-text>{{ new Date(property.updated_at).toDateString() }} &nbsp;Last Modified</v-card-text>
                 </v-flex>
                 <v-flex xs12 sm8>
                   <v-card-text>
                     <v-layout row wrap justify-end align-end>
                       <v-flex xs12 sm6 md3>
                         <v-layout align-center justify-end>
-                          <v-icon class="mx-1" v-if="property.depositStatus === 'Deposit Paid'" color="blue"
+                          <v-icon class="mx-1" v-if="property.deposit_holding === 'Deposit Paid'" color="blue"
                             >mdi-check</v-icon
                           >
                           <v-icon class="mr-1" v-else color="red">mdi-alert-circle</v-icon>
-                          <span class="subheading">{{ property.depositStatus }}</span>
+                          <span class="subheading">{{ property.deposit_holding }}</span>
                         </v-layout>
                       </v-flex>
                       <v-flex xs12 sm6 md3>
                         <v-layout align-center justify-end>
-                          <v-icon class="mx-1" v-if="property.applicationStatus === 'Application Active'" color="blue"
+                          <v-icon class="mx-1" v-if="property.status === 'Active'" color="blue"
                             >mdi-check</v-icon
                           >
                           <v-icon class="mr-1" v-else color="red">mdi-alert-circle</v-icon>
-                          <span class="subheading">{{ property.applicationStatus }}</span>
+                          <span class="subheading">{{ property.status }}</span>
                         </v-layout>
                       </v-flex>
                     </v-layout>
@@ -245,10 +246,14 @@
 
 <script>
 import InputTag from 'vue-input-tag'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+
 export default {
   name: 'ListView',
   components: {
-    InputTag
+    InputTag,
+    Loading
   },
   data() {
     return {
@@ -258,34 +263,7 @@ export default {
       saveFilter: false,
       tags: ["Residential", "Ameen Ramadan", "10-10-2018 - 11-3-2020"],
       no_image: require('@/assets/img/No_image_available.svg'),
-      properties: [
-        {
-          propertyId: 1,
-          address: '24 / 1 Ward Avenue Potts Point NSW 2011',
-          //image: 'https://pmcvariety.files.wordpress.com/2018/07/bradybunchhouse_sc11.jpg?w=1000&h=563&crop=1',
-          image:'',
-          contractNo: '123456789',
-          tenantName: 'Ameen Ramadan-Jradi',
-          leaseStartDate: new Date(),
-          leaseEndDate: new Date(),
-          depositStatus: 'Deposit Paid',
-          applicationStatus: 'Application Active',
-          lastModified: new Date()
-        },
-        {
-          propertyId: 2,
-          address: '20 George St, Sydney, NSW',
-          image:
-            'https://www.porterdavis.com.au/~/media/homes/verona/22/facades/verona-island-facade-classic.jpg?w=582&amp;h=320&amp;crop=1',
-          contractNo: '123456789',
-          tenantName: 'Taras Woronjanski',
-          leaseStartDate: new Date(),
-          leaseEndDate: new Date(),
-          depositStatus: 'Deposit Paid',
-          applicationStatus: 'Application Disable',
-          lastModified: new Date()
-        }
-      ],
+      applications: {},
       filter_list: [
         {
           name: 'Tenant Name:',
@@ -337,15 +315,30 @@ export default {
         }
       ],
       tenantNames: ['Ameen Ramadan', 'Taras Woronjanski', 'Bart Fart'],
-      ownerNames: ['John Kazal', 'Taras Woronjanski', 'Bart Fart']
+      ownerNames: ['John Kazal', 'Taras Woronjanski', 'Bart Fart'],
+      isLoading: true
     }
+  },
+  mounted() {
+    this.$store
+      .dispatch('getApplicationList')
+      .then(resp => {
+        this.isLoading = false
+        this.setApplicationList(resp.data.objects)
+      })
+      .catch(err => {
+        this.isLoading = false
+      })
   },
   methods: {
     viewProperty(property) {
       //const userId = this.$route.params.userId
-      const propertyId = property.propertyId
-      const path = `/home/detail/${propertyId}`
+      const propertyId = property.id
+      const path = `/dashboard/detail/${propertyId}`
       this.$router.push(path)
+    },
+    setApplicationList(payload) {
+      this.applications = payload
     }
   }
 }

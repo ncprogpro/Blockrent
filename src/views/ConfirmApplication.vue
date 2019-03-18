@@ -85,17 +85,37 @@
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Lease Contract Start Date:</v-label>
-            <v-text-field
-              v-model="leaseApplicationDetails.contractStartDate"
-              :rules="dateRules"
-              class="custom-round"
-              solo
-              single-line
-              outline
-              required
-              readonly
-              v-on="on"
-            ></v-text-field>
+            <v-menu
+              v-model="menu1"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="leaseApplicationDetails.contractStartDate"
+                  :rules="dateRules"
+                  class="custom-round"
+                  single-line
+                  outline
+                  required
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="leaseApplicationDetails.contractStartDate"
+                scrollable
+                no-title
+                light
+                @input="menu1 = false"
+              ></v-date-picker>
+            </v-menu>
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Property Address:</v-label>
@@ -112,16 +132,50 @@
           </v-flex>
           <v-flex xs12 sm6>
             <v-label>Lease Contract End Date</v-label>
+            <v-menu
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="leaseApplicationDetails.contractEndDate"
+                  :rules="dateRules"
+                  class="custom-round"
+                  solo
+                  single-line
+                  outline
+                  required
+                  readonly
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="leaseApplicationDetails.contractEndDate"
+                scrollable
+                no-title
+                light
+                @input="menu2 = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs12 sm6>
+            <v-label>Premise No. (DEWA):</v-label>
             <v-text-field
-              v-model="leaseApplicationDetails.contractEndDate"
-              :rules="dateRules"
+              v-model="leaseApplicationDetails.premiseNo"
+              :rules="premiseNoRules"
               class="custom-round"
+              readonly
               solo
               single-line
               outline
               required
-              readonly
-              v-on="on"
             ></v-text-field>
           </v-flex>
           <v-flex xs12 sm6>
@@ -133,19 +187,6 @@
               type="number"
               readonly
               min="1"
-              solo
-              single-line
-              outline
-              required
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs12 sm6>
-            <v-label>Premise No. (DEWA):</v-label>
-            <v-text-field
-              v-model="leaseApplicationDetails.premiseNo"
-              :rules="premiseNoRules"
-              class="custom-round"
-              readonly
               solo
               single-line
               outline
@@ -280,7 +321,6 @@ export default {
     Loading
   },
   async created() {
-    /*
     this.isLoading = true
     this.$store
       .dispatch('getApplicationDetail', {
@@ -288,13 +328,12 @@ export default {
       })
       .then(resp => {
         this.isLoading = false
-        console.log(resp)
+        this.setDetails(resp.data)
       })
       .catch(err => {
         console.log(err)
         this.$router.push('/')
       })
-    */
   },
   methods: {
     async submit() {
@@ -339,6 +378,23 @@ export default {
         .catch(err => {
           this.isLoading = false
         })
+    },
+    setDetails(payload) {
+      console.log(payload)
+      this.personalDetails.email = payload['tenant_email']
+      this.personalDetails.firstName = payload['tenant_first_name']
+      this.personalDetails.lastName = payload['tenant_last_name']
+      this.personalDetails.phoneNumber = payload['tenant_phone_number']
+      this.otherParty.email = payload['owner_email']
+      this.otherParty.firstName = payload['owner_first_name']
+      this.otherParty.lastName = payload['owner_last_name']
+      this.otherParty.phoneNumber = payload['owner_phone_number']
+      this.leaseApplicationDetails.contractNo = payload['ejari_no']
+      this.leaseApplicationDetails.contractStartDate = payload['start_date']
+      this.leaseApplicationDetails.address = payload['address']
+      this.leaseApplicationDetails.contractEndDate = payload['end_date']
+      this.leaseApplicationDetails.securityDepositAmount = payload['total_contract_value']
+      this.leaseApplicationDetails.premiseNo = payload['premis_no']
     }
   }
 }

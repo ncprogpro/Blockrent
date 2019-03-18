@@ -10,7 +10,7 @@
             <v-list-tile-title>Submit an Application</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile to="/home/list">
+        <v-list-tile to="/dashboard/list">
           <v-list-tile-action>
             <v-icon class="yground--text">mdi-file-document-box-outline</v-icon>
           </v-list-tile-action>

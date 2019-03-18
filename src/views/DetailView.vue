@@ -1,11 +1,12 @@
 <template>
   <v-app>
+    <loading :active.sync="isLoading" :is-full-page="true" loader="bars" color="orange"> </loading>
     <v-toolbar flat color="grey" class="search-toolbar">
-      <div class="headline yground--text pl-3">{{ property.address }}</div>
+      <div class="headline yground--text pl-3">{{ application.address }}</div>
       <v-spacer></v-spacer>
       <div class="headline">
         <v-card-text title class="white--text border pa-2">
-          Security Deposit Held: {{ property.depositValue }}
+          Security Deposit Held: {{ application.total_contract_value }}
         </v-card-text>
       </div>
       <v-spacer></v-spacer>
@@ -40,25 +41,44 @@
           <v-container fluid>
             <div class="display-1 yground--text mb-2">Application Details</div>
             <v-layout row wrap pb-3>
-              <v-flex xs12 sm6 pb-2>
+              <v-flex xs12 sm6 lg4 pb-2>
                 <div class="font-weight-bold">Ejari Contract/Certificate No:</div>
-                <div>{{ property.contractNo }}</div>
+                <div>{{ application.ejari_no }}</div>
               </v-flex>
-              <v-flex xs12 sm6 pb-2>
+              <v-flex xs12 sm6 lg4 pb-2>
                 <div class="font-weight-bold">Premise No (Dewa):</div>
-                <div>{{ property.premiseNo }}</div>
+                <div>{{ application.premis_no }}</div>
               </v-flex>
-              <v-flex xs12 sm6 pb-2>
+              <v-flex xs12 sm6 lg4 pb-2>
+                <div class="font-weight-bold">Annual Rent:</div>
+                <div>{{ application.annual_rent }}</div>
+              </v-flex>
+              <v-flex xs12 sm6 lg4 pb-2>
                 <div class="font-weight-bold">Contract Period:</div>
-                <div>{{ property.leaseStartDate.toDateString() }} to {{ property.leaseEndDate.toDateString() }}</div>
+                <div>
+                  {{ new Date(application.start_date).toDateString() }} to
+                  {{ new Date(application.end_date).toDateString() }}
+                </div>
               </v-flex>
-              <v-flex xs12 sm6 pb-2>
-                <div class="font-weight-bold">Landlord/Property Owner:</div>
-                <div>{{ property.ownerName }}</div>
+              <v-flex xs12 sm6 lg4 pb-2>
+                <div class="font-weight-bold">Property Type:</div>
+                <div>{{ application.property_usage }}</div>
               </v-flex>
-              <v-flex xs12 sm6>
+              <v-flex xs12 sm6 lg4 pb-2>
+                <div class="font-weight-bold">Total Contract Value:</div>
+                <div>{{ application.total_contract_value }}</div>
+              </v-flex>
+              <v-flex xs12 sm6 lg4 pb-2>
                 <div class="font-weight-bold">Tenant Name:</div>
-                <div>{{ property.tenantName }}</div>
+                <div>{{ application.tenant_name }}</div>
+              </v-flex>
+              <v-flex xs12 sm6 lg4 pb-2>
+                <div class="font-weight-bold">Landlord/Property Owner:</div>
+                <div>{{ application.owner_name }}</div>
+              </v-flex>
+              <v-flex xs12 sm6 lg4 pb-2>
+                <div class="font-weight-bold">Property Size:</div>
+                <div>{{ application.property_size }}</div>
               </v-flex>
             </v-layout>
             <v-layout row>
@@ -76,10 +96,12 @@
 <script>
 import ApplicationUpdates from '../components/ApplicationUpdates'
 import DetailCarousel from '../components/DetailCarousel'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
   name: 'DetailView',
-  components: { ApplicationUpdates, DetailCarousel },
+  components: { ApplicationUpdates, DetailCarousel, Loading },
   data() {
     return {
       property: {
@@ -139,7 +161,27 @@ export default {
           thumb: require('@/images/thumbs/p4.jpeg')
         }
       ],
-      drop_actions: [{ title: 'Top-up' }, { title: 'Submit Request' }]
+      drop_actions: [{ title: 'Top-up' }, { title: 'Submit Request' }],
+      application_id: '',
+      application: {},
+      isLoading: true
+    }
+  },
+  mounted() {
+    this.application_id = this.$route.params.applicationId
+    this.$store
+      .dispatch('getApplicationDetail', {appId: this.application_id})
+      .then(resp => {
+        this.isLoading = false
+        this.setApplicationDetail(resp.data)
+      })
+      .catch(err => {
+        this.isLoading = false
+      })
+  },
+  methods: {
+    setApplicationDetail(payload) {
+      this.application = payload
     }
   }
 }
