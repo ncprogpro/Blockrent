@@ -145,7 +145,6 @@
               v-model="leaseApplicationDetails.premiseNo"
               :rules="premiseNoRules"
               class="custom-round"
-              type="number"
               readonly
               solo
               single-line

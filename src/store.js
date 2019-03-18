@@ -29,11 +29,12 @@ export default new Vuex.Store({
     setLoggedInfo(state, payload) {
       state.username = payload.username
       state.apiKey = payload.api_key
-      if (state.apiKey) {
-        localStorage.setItem('username', payload.username)
-        localStorage.setItem('apiKey', payload.api_key)
-        Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
-      }
+
+      localStorage.setItem('username', payload.username)
+      localStorage.setItem('apiKey', payload.api_key)
+      console.log(payload.username)
+      console.log(payload.api_key)
+      Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
     },
     auth_request(state) {
       state.status = 'loading'
@@ -61,7 +62,6 @@ export default new Vuex.Store({
     userLogin({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        console.log(userInfo)
         Vue.prototype
           .$http({
             url: 'http://127.0.0.1:8000/api/v1/users/login/',
@@ -69,33 +69,38 @@ export default new Vuex.Store({
             method: 'POST'
           })
           .then(resp => {
-            console.log(resp.data)
             commit('setLoggedInfo', resp.data)
             commit('setIsAuthenticated', true)
             resolve(resp)
           })
           .catch(err => {
             commit('auth_error')
-            commit('setLoggedInfo', {'username': null, 'api_key': null})
+            commit('setLoggedInfo', {'username': '', 'api_key': ''})
             commit('setIsAuthenticated', false)
             reject(err)
           })
       })
     },
     userLogout({ commit }) {
-      // firebase
-      //   .auth()
-      //   .signOut()
-      //   .then(() => {
-      //     commit('setUser', null)
-      //     commit('setIsAuthenticated', false)
-      //     router.push('/')
-      //   })
-      //   .catch(() => {
-      //     commit('setUser', null)
-      //     commit('setIsAuthenticated', false)
-      //     router.push('/')
-      //   })
+      return new Promise((resolve, reject) => {
+        commit('auth_request')
+        Vue.prototype
+          .$http({
+            url: 'http://127.0.0.1:8000/api/v1/users/logout/',
+            method: 'GET'
+          })
+          .then(resp => {
+            commit('setLoggedInfo', {'username': '', 'api_key': ''})
+            commit('setIsAuthenticated', false)
+            resolve(resp)
+          })
+          .catch(err => {
+            commit('auth_error')
+            commit('setLoggedInfo', {'username': '', 'api_key': ''})
+            commit('setIsAuthenticated', false)
+            reject(err)
+          })
+      })
     },
     registerApplication({ commit }, application) {
       return new Promise((resolve, reject) => {

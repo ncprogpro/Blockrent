@@ -1,12 +1,10 @@
-.application.theme--dark.landing-page {
+.landing-page {
+    height: 100%;
     background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../../images/landing_page.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-}
-
-.landing-page .container {
-    height: 100%;
+    padding-left: 70px;
 }
 
 .dashboard-toolbar .v-toolbar__content {
@@ -78,12 +76,11 @@
 }
 
 .update-bar {
-    border-width: 1px;
     border-color: #FBBA23;
 }
 
 .update-bar .left-border{
-    min-height: 100%;
+    height: 100%;
     border-left: solid;
     border-width: 1px;
     border-color: #FBBA23;

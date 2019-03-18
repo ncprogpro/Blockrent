@@ -1,47 +1,37 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Dashboard from './views/Dashboard'
+import Dashboard from './container/Dashboard'
 import Profile from './views/Profile'
 import Preferences from './views/Preferences'
 import Property from './views/Property'
 import NotFound from './views/NotFound'
+import LandingPage from './views/Landing'
+import Registration from './views/RegistrationForm'
+import ConfirmApplication from './views/ConfirmApplication'
+import ListView from './views/ListView'
+import DetailView from './views/DetailView'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'landing',
-      component: () => import('./views/Landing.vue')
+      component: LandingPage
     },
     {
       path: '/registration',
       name: 'registration',
-      component: () => import('./views/RegistrationForm')
-    },
-    {
-      path: '/registration/thanks',
-      name: 'thanks',
-      component: () => import('./views/FormThankYou')
-    },
-    {
-      path: '/registration/temp',
-      name: 'temp',
-      component: () => import('./views/BankDetailsForm')
+      component: Registration
     },
     {
       path: '/registration/:applicationid/confirm/',
       name: 'confirm',
       props: true,
-      component: () => import('./views/ConfirmApplication.vue')
-    },
-    {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: Dashboard
+      component: ConfirmApplication
     },
     {
       path: '/users/:userId/properties/:propertyId',
@@ -69,20 +59,20 @@ export default new Router({
       component: () => import('./views/Register.vue')
     },
     {
-      path: '/home',
-      name: 'home',
-      redirect: 'home/list',
-      component: () => import('./container/Dashboard.vue'),
+      path: '/dashboard',
+      name: 'dashboard',
+      redirect: 'dashboard/list',
+      component: Dashboard,
       children: [
         {
           path: 'list',
           name: 'list',
-          component: () => import('./views/ListView.vue')
+          component: ListView
         },
         {
           path: 'detail/:applicationId',
           name: 'detail',
-          component: () => import('./views/DetailView.vue')
+          component: DetailView
         }
       ]
     },
@@ -95,3 +85,18 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/', '/registration']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = localStorage.getItem('apiKey')
+  if (authRequired && !loggedIn) {
+    return next('/')
+  }
+  if (loggedIn && to.name === 'landing') {
+    return next('/dashboard')
+  }
+  next()
+})
+
+export default router

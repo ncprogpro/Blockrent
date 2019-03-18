@@ -74,7 +74,7 @@
               </v-card-actions>
             </v-card>
           </v-menu>
-          <v-menu v-model="filter" :close-on-content-click="false" offset-y>
+          <v-menu v-model="sort" :close-on-content-click="false" offset-y>
             <v-btn slot="activator" flat>
               Sort
               <v-icon right dark>mdi-menu-down</v-icon>
@@ -90,12 +90,12 @@
           <v-card tile flat class="card-border">
             <v-container fluid>
               <v-layout row wrap>
-                <v-flex xs12 sm4>
-                  <v-card-text>
-                    <v-img max-height="150px" :src="property.image"></v-img>
+                <v-flex xs12 sm4 md3 lg2>
+                  <v-card-text max-height="150px">
+                    <img :src="property.image" alt="" width="100%"/>
                   </v-card-text>
                 </v-flex>
-                <v-flex xs12 sm8>
+                <v-flex xs12 sm8 md9 lg10>
                   <v-card-text>
                     <v-layout row wrap justify-space-between>
                       <v-flex xs12 sm6 md9>
@@ -253,14 +253,17 @@ export default {
   data() {
     return {
       filter: false,
+      sort: false,
       addressForm: false,
       saveFilter: false,
       tags: ["Residential", "Ameen Ramadan", "10-10-2018 - 11-3-2020"],
+      no_image: require('@/assets/img/No_image_available.svg'),
       properties: [
         {
           propertyId: 1,
           address: '24 / 1 Ward Avenue Potts Point NSW 2011',
-          image: 'https://pmcvariety.files.wordpress.com/2018/07/bradybunchhouse_sc11.jpg?w=1000&h=563&crop=1',
+          //image: 'https://pmcvariety.files.wordpress.com/2018/07/bradybunchhouse_sc11.jpg?w=1000&h=563&crop=1',
+          image:'',
           contractNo: '123456789',
           tenantName: 'Ameen Ramadan-Jradi',
           leaseStartDate: new Date(),

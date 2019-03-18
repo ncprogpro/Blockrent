@@ -1,5 +1,5 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
-  <v-content ref="form" lazy-validation>
+  <v-content lazy-validation>
     <loading :active.sync="isLoading" :is-full-page="true" loader="bars" color="orange"> </loading>
     <p class="font-weight-bold text-xs-center">
       Register your security deposit application<br />
@@ -187,6 +187,7 @@
                       required
                       class="custom-round"
                       :rules="propertyRule"
+                      type="number"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm4>
@@ -237,12 +238,13 @@
                   <v-flex xs12 sm4>
                     <v-label>Annual Rent:</v-label>
                     <v-text-field
-                      v-model="leaseApplicationDetails.annaulRent"
+                      v-model="leaseApplicationDetails.annualRent"
                       single-line
                       outline
                       required
                       class="custom-round"
                       :rules="annualRule"
+                      type="number"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm4>
@@ -251,7 +253,6 @@
                       v-model="leaseApplicationDetails.premiseNo"
                       :rules="premiseNoRules"
                       class="custom-round"
-                      type="number"
                       single-line
                       outline
                       required
@@ -301,53 +302,55 @@
     </v-stepper>
     <v-dialog v-model="depositDialog" persistent max-width="700">
       <v-card>
-        <v-card-title class="headline primary--text">Security Deposit Details:</v-card-title>
-        <v-layout row wrap>
-          <v-flex d-flex xs12 sm6>
-            <v-container>
-              <v-layout row wrap>
-                <v-flex>
-                  <v-label>Terms:</v-label>
-                  <v-select
-                    :items="terms_list"
-                    v-model="depositDetails.term"
-                    single-line
-                    outline
-                    :rules="termRules"
-                    placeholder="Select the term"
-                    v-on:change="changeTerm"
-                  ></v-select>
-                </v-flex>
-                <v-flex>
-                  <v-label>Amount:</v-label>
-                  <v-text-field
-                    v-model="depositDetails.amount"
-                    :rules="amountRules"
-                    :readonly="isPercent"
-                    type="number"
-                    single-line
-                    outline
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-flex>
-          <v-flex xs12 sm6>
-            <v-container>
-              <v-layout row wrap>
-                <v-flex v-if="isPercent">
-                  <v-label>%:</v-label>
-                  <v-text-field v-model="depositDetails.termPercent" type="number" single-line outline></v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-spacer></v-spacer>
-          <v-btn class="black--text custom-round" color="primary" outline @click="depositDialog = false">Back</v-btn>
-          <v-btn class="black--text custom-round" color="primary" @click="depositDialog = false">Submit</v-btn>
-        </v-layout>
+        <v-form ref="form" lazy-validation>
+          <v-card-title class="headline primary--text">Security Deposit Details:</v-card-title>
+          <v-layout row wrap>
+            <v-flex d-flex xs12 sm6>
+              <v-container>
+                <v-layout row wrap>
+                  <v-flex>
+                    <v-label>Terms:</v-label>
+                    <v-select
+                      :items="terms_list"
+                      v-model="depositDetails.term"
+                      single-line
+                      outline
+                      :rules="termRules"
+                      placeholder="Select the term"
+                      v-on:change="changeTerm"
+                    ></v-select>
+                  </v-flex>
+                  <v-flex>
+                    <v-label>Amount:</v-label>
+                    <v-text-field
+                      v-model="depositDetails.amount"
+                      :rules="amountRules"
+                      :readonly="isPercent"
+                      type="number"
+                      single-line
+                      outline
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-flex>
+            <v-flex xs12 sm6>
+              <v-container>
+                <v-layout row wrap>
+                  <v-flex v-if="isPercent">
+                    <v-label>%:</v-label>
+                    <v-text-field v-model="depositDetails.termPercent" type="number" single-line outline></v-text-field>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-flex>
+          </v-layout>
+          <v-layout row>
+            <v-spacer></v-spacer>
+            <v-btn class="black--text custom-round" color="primary" outline @click="depositDialog = false">Back</v-btn>
+            <v-btn class="black--text custom-round" color="primary" @click="validate">Submit</v-btn>
+          </v-layout>
+        </v-form>
       </v-card>
     </v-dialog>
     <v-dialog v-model="platform" persistent max-width="700">
@@ -370,7 +373,7 @@
           </v-flex>
         </v-layout>
         <div class="text-xs-center">
-          <v-btn class="black--text" color="primary" @click="platform = false">OK</v-btn>
+          <v-btn class="black--text" color="primary" @click="platform = false" to="/">OK</v-btn>
         </div>
       </v-card>
     </v-dialog>
@@ -402,7 +405,7 @@ export default {
         premiseNo: '',
         securityDepositAmount: '',
         propertyUsage: '',
-        annaulRent: '',
+        annualRent: '',
         propertySize: ''
       },
       otherParty: {
@@ -414,7 +417,7 @@ export default {
       depositDetails: {
         term: '',
         amount: '',
-        termPercent: '',
+        termPercent: ''
       },
       nameRules: [v => !!v || 'Name is required'],
       phoneNumberRules: [v => !!v || 'Phone number is required'],
@@ -452,7 +455,8 @@ export default {
             registrationForm: {
               personalDetails: this.personalDetails,
               leaseApplicationDetails: this.leaseApplicationDetails,
-              otherParty: this.otherParty
+              otherParty: this.otherParty,
+              depositDetails: this.depositDetails
             }
           })
           .then(() => {
@@ -472,20 +476,17 @@ export default {
       }
     },
     validateUser() {
-      if (this.$refs.formUser.validate())
-      {
+      if (this.$refs.formUser.validate()) {
         this.step = 2
       }
     },
     validateLease() {
-      if (this.$refs.formLease.validate())
-      {
+      if (this.$refs.formLease.validate()) {
         this.depositDialog = true
       }
     },
     changeTerm(sel) {
       this.isPercent = sel === this.terms_list[1]
-      console.log(sel)
     },
     closeAlert() {
       this.platform = false

@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid class="landing-page">
     <v-layout justify-end column fill-height>
       <v-flex xs-12>
         <v-layout align-start justify-center column fill-height>
@@ -41,7 +41,7 @@
         </v-layout>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="isLogin" persistent max-width="400">
+    <v-dialog v-model="isLogin" persistent max-width="500">
       <v-card>
         <v-card color="yground" class="login-panel">
           <div align="right">
@@ -56,7 +56,10 @@
           </v-flex>
           <v-flex lazy-validation xl12 sm8 offset-sm2>
             <v-form ref="form" v-model="valid">
-              <v-flex xs12 mt-5>
+              <v-flex xs-12 mt-3>
+                <v-alert :value="alert" type="warning" mt-3>Username or password is incorrect</v-alert>
+              </v-flex>
+              <v-flex xs12 mt-3>
                 <v-label>Username:</v-label>
                 <v-text-field
                   v-model="email"
@@ -97,7 +100,7 @@
         <v-card light class="login-panel">
           <v-flex xl12 sm8 offset-sm2>
             <v-responsive>
-              <v-img :src="require('@/assets/img/Dubai id.svg')"></v-img>
+              <v-img :src="require('@/assets/img/Dubai_id.svg')"></v-img>
             </v-responsive>
           </v-flex>
         </v-card>
@@ -114,6 +117,7 @@ export default {
       platform: false,
       isLogin: false,
       valid: false,
+      alert: false,
       email: '',
       password: '',
       emailRules: [v => !!v || 'E-mail is required', v => /.+@.+/.test(v) || 'E-mail must be valid'],
@@ -122,9 +126,6 @@ export default {
         v => v.length >= 6 || 'Password must be greater than 6 characters'
       ]
     }
-  },
-  beforeCreate() {
-    document.getElementById('app').className += ' landing-page'
   },
   beforeDestroy() {
     document.getElementById('app').classList.remove('landing-page')
@@ -142,9 +143,13 @@ export default {
           })
           .then(() => {
             this.isLogin = false
-            this.$router.push('/')
+            this.$router.push('/dashboard')
           })
-          .catch(err => console.log(err))
+          .catch(err => {
+            if (err.response.status == 401) {
+              this.alert = true
+            }
+          })
       }
     }
   }
