@@ -305,7 +305,7 @@
       </v-stepper-items>
     </v-stepper>
     <v-dialog v-model="depositDialog" persistent max-width="700">
-      <v-card>
+      <v-card dark>
         <v-form ref="form" lazy-validation>
           <v-card-title class="headline primary--text">Security Deposit Details:</v-card-title>
           <v-layout row wrap>
@@ -365,7 +365,7 @@
       </v-card>
     </v-dialog>
     <v-dialog v-model="platform" persistent max-width="700">
-      <v-card>
+      <v-card dark>
         <v-card-title class="headline primary--text">Awesome!</v-card-title>
         <v-layout row wrap align-center>
           <v-flex xs12 sm7 class="subheading">

@@ -32,6 +32,7 @@ export default new Vuex.Store({
 
       localStorage.setItem('username', payload.username)
       localStorage.setItem('apiKey', payload.api_key)
+      localStorage.setItem('user_id', payload.account_id)
       Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
     },
     clearLoginInfo(state) {
@@ -40,6 +41,7 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       localStorage.setItem('username', '')
       localStorage.setItem('apiKey', '')
+      localStorage.setItem('user_id', '')
       Vue.prototype.$http.defaults.headers.common['Authorization'] = 'ApiKey ' + state.username + ':' + state.apiKey
       router.push('/')
     },
@@ -51,21 +53,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    userRegister({ commit }, { email, password }) {
-      // firebase
-      //   .auth()
-      //   .createUserWithEmailAndPassword(email, password)
-      //   .then(user => {
-      //     commit('setUser', user)
-      //     commit('setIsAuthenticated', true)
-      //     router.push('/about')
-      //   })
-      //   .catch(() => {
-      //     commit('setUser', null)
-      //     commit('setIsAuthenticated', false)
-      //     router.push('/')
-      //   })
-    },
     userLogin({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
@@ -141,7 +128,7 @@ export default new Vuex.Store({
     getApplicationDetail({ commit }, app) {
       return new Promise((resolve, reject) => {
         Vue.prototype
-          .$http({ url: 'http://127.0.0.1:8000/api/v1/applications/' + app.appId + '/', method: 'GET' })
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/application-detail/' + app.appId + '/', method: 'GET' })
           .then(resp => {
             resolve(resp)
           })
@@ -156,7 +143,11 @@ export default new Vuex.Store({
     confirmApplication({ commit }, app) {
       return new Promise((resolve, reject) => {
         Vue.prototype
-          .$http({ url: 'http://127.0.0.1:8000/api/v1/applications/' + app.appId + '/', method: 'PATCH', data: app })
+          .$http({
+            url: 'http://127.0.0.1:8000/api/v1/application-detail/' + app.appId + '/',
+            method: 'PATCH',
+            data: app
+          })
           .then(resp => {
             resolve(resp)
           })
@@ -172,6 +163,37 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         Vue.prototype
           .$http({ url: 'http://127.0.0.1:8000/api/v1/filters/', method: 'POST', data: app })
+          .then(resp => {
+            resolve(resp)
+          })
+          .catch(err => {
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
+            reject(err)
+          })
+      })
+    },
+    getFilterList({ commit }) {
+      return new Promise((resolve, reject) => {
+        Vue.prototype
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/filters/', method: 'GET' })
+          .then(resp => {
+            resolve(resp)
+          })
+          .catch(err => {
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
+            reject(err)
+          })
+      })
+    },
+    getUpdates({ commit }) {
+      return new Promise((resolve, reject) => {
+        let params = {}
+        params['who'] = localStorage.getItem('user_id')
+        Vue.prototype.$http.get('http://127.0.0.1:8000/api/v1/events/', {params: params})
           .then(resp => {
             resolve(resp)
           })

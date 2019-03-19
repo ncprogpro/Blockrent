@@ -29,7 +29,7 @@
       <v-toolbar-side-icon @click.stop="mini = !mini" class="yground--text"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
       <v-badge overlap>
-        <span slot="badge">0</span>
+        <span slot="badge">{{ this.updateList.length }}</span>
         <v-btn icon @click="rightDrawer = !rightDrawer">
           <v-icon>mdi-bell</v-icon>
         </v-btn>
@@ -62,12 +62,12 @@
           <v-divider></v-divider>
           <v-card flat>
             <v-layout row wrap>
-              <v-flex xs12 v-for="item in updates" class="bottom-border right-border">
+              <v-flex xs12 v-for="item in updateList" class="bottom-border right-border">
                 <v-card flat>
                   <v-layout justify-space-between>
                     <v-card-title>
-                      {{ item.name }}
-                      {{ item.text }}
+                      <div>{{ item.username }}</div>
+                      <div>{{ item.what }}</div>
                     </v-card-title>
                     <v-card-actions>
                       <a>View</a>
@@ -95,18 +95,7 @@ export default {
       rightDrawer: false,
       mini: true,
       right: null,
-      updates: [
-        {
-          name: 'Ameen Ramadan',
-          text: 'has deposited 3000AED',
-          last_modified: '1 hours ago'
-        },
-        {
-          name: 'John Kazal',
-          text: 'has requestd for a 3000AED top-up',
-          last_modified: '2 hours ago'
-        }
-      ]
+      updateList: []
     }
   },
   methods: {
@@ -120,6 +109,16 @@ export default {
           this.$router.push('/')
         })
     }
+  },
+  beforeCreate() {
+    this.$store
+      .dispatch('getUpdates')
+      .then(resp => {
+        this.updateList = resp.data.objects
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }
 </script>

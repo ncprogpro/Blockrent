@@ -51,6 +51,12 @@
     background: transparent !important;
 }
 
+.multi-step-menu {
+    border: 1px solid black !important;
+    background: #F8F9FA !important;
+    width: 250px;
+}
+
 .multi-step-menu .v-menu,
 .multi-step-menu .v-menu div[role=listitem]{
     width: 100%;
@@ -73,6 +79,14 @@
 .filter-tagging .vue-input-tag-wrapper {
     background: none !important;
     border: none !important;
+}
+
+.filter-tagging .input-tag .remove {
+    display: none;
+}
+
+.filter-tagging .new-tag {
+    display: none;
 }
 
 .update-bar {
@@ -145,4 +159,19 @@
     top:0;
     width:100px;
     font-weight:100;
+}
+
+.sort-card-border {
+    border-top: solid 1px black !important;
+    border-left: solid 1px black !important;;
+    border-right: solid 1px black !important;;
+}
+
+.sort-list {
+    padding: 0;
+}
+
+.filter-list div[role=listitem],
+.sort-list div[role=listitem]{
+    border-bottom: 1px solid black;
 }
