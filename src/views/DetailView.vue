@@ -102,6 +102,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
   name: 'DetailView',
   components: { ApplicationUpdates, DetailCarousel, Loading },
+  props: ['applicationid'],
   data() {
     return {
       property: {
@@ -162,15 +163,13 @@ export default {
         }
       ],
       drop_actions: [{ title: 'Top-up' }, { title: 'Submit Request' }],
-      application_id: '',
       application: {},
       isLoading: true
     }
   },
   mounted() {
-    this.application_id = this.$route.params.applicationId
     this.$store
-      .dispatch('getApplicationDetail', {appId: this.application_id})
+      .dispatch('getApplicationDetail', {appId: this.applicationid})
       .then(resp => {
         this.isLoading = false
         this.setApplicationDetail(resp.data)

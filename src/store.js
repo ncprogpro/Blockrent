@@ -152,6 +152,36 @@ export default new Vuex.Store({
             reject(err)
           })
       })
+    },
+    confirmApplication({ commit }, app) {
+      return new Promise((resolve, reject) => {
+        Vue.prototype
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/applications/' + app.appId + '/', method: 'PATCH', data: app })
+          .then(resp => {
+            resolve(resp)
+          })
+          .catch(err => {
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
+            reject(err)
+          })
+      })
+    },
+    storeFilterSet({ commit }, app) {
+      return new Promise((resolve, reject) => {
+        Vue.prototype
+          .$http({ url: 'http://127.0.0.1:8000/api/v1/filters/', method: 'POST', data: app })
+          .then(resp => {
+            resolve(resp)
+          })
+          .catch(err => {
+            if (err.response.status === 401) {
+              commit('clearLoginInfo')
+            }
+            reject(err)
+          })
+      })
     }
   }
 })

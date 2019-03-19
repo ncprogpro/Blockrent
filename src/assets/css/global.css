@@ -109,3 +109,40 @@
     border-width: 1px;
     border-color: #FBBA23;
 }
+
+.inputPrice input[type='number'] {
+    -moz-appearance:textfield;
+}
+.inputPrice input::-webkit-outer-spin-button,
+.inputPrice input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.input-split-group{
+    position:relative;
+    width:100%;
+    overflow:hidden;
+}
+.input-split-group input {
+    position:relative;
+    height:45px;
+    border-radius:30px;
+    min-width:500px;
+    box-shadow:none;
+    border:1px solid #eaeaea;
+    padding-left:160px;
+}
+.input-split-group label{
+    position:absolute;
+    left:0;
+    height:48px;
+    background:#55ccf2;
+    padding:0 25px;
+    border-radius:30px;
+    line-height:48px;
+    font-size:18px;
+    color:#fff;
+    top:0;
+    width:100px;
+    font-weight:100;
+}

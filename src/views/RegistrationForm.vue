@@ -41,7 +41,8 @@
                       v-model="personalDetails.phoneNumber"
                       :rules="phoneNumberRules"
                       class="custom-round"
-                      :mask="phone"
+                      return-masked-value
+                      mask="+###########"
                       single-line
                       outline
                       required
@@ -93,7 +94,8 @@
                       v-model="otherParty.phoneNumber"
                       :rules="phoneNumberRules"
                       class="custom-round"
-                      :mask="phone"
+                      return-masked-value
+                      mask="+###########"
                       single-line
                       outline
                       required
@@ -175,6 +177,7 @@
                         no-title
                         light
                         @input="menu1 = false"
+                        :max="leaseApplicationDetails.contractEndDate"
                       ></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -185,7 +188,7 @@
                       single-line
                       outline
                       required
-                      class="custom-round"
+                      class="custom-round inputPrice"
                       :rules="propertyRule"
                       type="number"
                     ></v-text-field>
@@ -232,6 +235,7 @@
                         no-title
                         light
                         @input="menu2 = false"
+                        :min="leaseApplicationDetails.contractStartDate"
                       ></v-date-picker>
                     </v-menu>
                   </v-flex>
@@ -242,7 +246,7 @@
                       single-line
                       outline
                       required
-                      class="custom-round"
+                      class="custom-round inputPrice"
                       :rules="annualRule"
                       type="number"
                     ></v-text-field>
@@ -269,11 +273,11 @@
                     ></v-select>
                   </v-flex>
                   <v-flex xs12 sm4>
-                    <v-label>Total Contract Values:</v-label>
+                    <v-label>Total Contract Value:</v-label>
                     <v-text-field
                       v-model="leaseApplicationDetails.securityDepositAmount"
                       :rules="securityDepositRules"
-                      class="custom-round"
+                      class="custom-round inputPrice"
                       type="number"
                       min="1"
                       single-line
@@ -326,6 +330,7 @@
                       v-model="depositDetails.amount"
                       :rules="amountRules"
                       :readonly="isPercent"
+                      class="inputPrice"
                       type="number"
                       single-line
                       outline
@@ -339,7 +344,13 @@
                 <v-layout row wrap>
                   <v-flex v-if="isPercent">
                     <v-label>%:</v-label>
-                    <v-text-field v-model="depositDetails.termPercent" type="number" single-line outline></v-text-field>
+                    <v-text-field
+                      v-model="depositDetails.termPercent"
+                      class="inputPrice"
+                      type="number"
+                      single-line
+                      outline
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -440,7 +451,9 @@ export default {
       isLoading: false,
       terms_list: ['Fixed Amount', '% of Contract Value'],
       property_usage: ['Residential', 'Commercial', 'Industrial'],
-      isPercent: false
+      isPercent: false,
+      min_date: '',
+      max_date: ''
     }
   },
   components: {

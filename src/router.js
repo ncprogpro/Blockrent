@@ -70,8 +70,9 @@ const router = new Router({
           component: ListView
         },
         {
-          path: 'detail/:applicationId',
+          path: 'detail/:applicationid',
           name: 'detail',
+          props: true,
           component: DetailView
         }
       ]

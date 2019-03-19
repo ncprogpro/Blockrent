@@ -76,7 +76,7 @@
               v-model="leaseApplicationDetails.contractNo"
               :rules="contractNoRules"
               class="custom-round"
-              readonly
+              :readonly="is_readonly"
               solo
               single-line
               outline
@@ -114,6 +114,8 @@
                 no-title
                 light
                 @input="menu1 = false"
+                :max="leaseApplicationDetails.contractEndDate"
+                :disabled="is_readonly"
               ></v-date-picker>
             </v-menu>
           </v-flex>
@@ -123,7 +125,7 @@
               v-model="leaseApplicationDetails.address"
               :rules="addressRules"
               class="custom-round"
-              readonly
+              :readonly="is_readonly"
               solo
               single-line
               outline
@@ -162,6 +164,8 @@
                 no-title
                 light
                 @input="menu2 = false"
+                :min="leaseApplicationDetails.contractStartDate"
+                :disabled="is_readonly"
               ></v-date-picker>
             </v-menu>
           </v-flex>
@@ -171,7 +175,7 @@
               v-model="leaseApplicationDetails.premiseNo"
               :rules="premiseNoRules"
               class="custom-round"
-              readonly
+              :readonly="is_readonly"
               solo
               single-line
               outline
@@ -185,7 +189,7 @@
               :rules="securityDepositRules"
               class="custom-round"
               type="number"
-              readonly
+              :readonly="is_readonly"
               min="1"
               solo
               single-line
@@ -260,15 +264,11 @@
       <v-layout row>
         <span class="company-name">Blockrent</span>
         <v-spacer class="hidden-sm-and-down"></v-spacer>
-        <v-btn class="primary--text custom-round" to="/">
-          Edit
-        </v-btn>
-        <v-btn color="red" class="custom-round red" outline @click="decline">
-          Decline
-        </v-btn>
-        <v-btn class="secondary--text custom-round" color="primary" @click="validate">
-          Confirm
-        </v-btn>
+        <template >
+          <v-btn class="primary--text custom-round" @click="is_readonly = !is_readonly">Edit</v-btn>
+          <v-btn color="red" class="custom-round red" outline @click="decline">Decline</v-btn>
+          <v-btn class="secondary--text custom-round" color="primary" @click="validate">Confirm</v-btn>
+        </template>
       </v-layout>
     </v-container>
   </v-form>
@@ -314,7 +314,8 @@ export default {
       menu1: false,
       menu2: false,
       phone: 'phone',
-      isLoading: false
+      isLoading: false,
+      is_readonly: true
     }
   },
   components: {
@@ -340,16 +341,14 @@ export default {
       if (this.$refs.form.validate()) {
         this.isLoading = true
         this.$store
-          .dispatch('registerApplication', {
-            registrationForm: {
-              personalDetails: this.personalDetails,
-              leaseApplicationDetails: this.leaseApplicationDetails,
-              otherParty: this.otherParty
-            }
+          .dispatch('confirmApplication', {
+            appId: this.applicationid,
+            confirm: 1,
+            leaseApplicationDetails: this.leaseApplicationDetails
           })
           .then(() => {
             this.isLoading = false
-            //this.$router.push('/')
+            this.$router.push('/')
           })
           .catch(err => {
             this.isLoading = false
@@ -380,7 +379,6 @@ export default {
         })
     },
     setDetails(payload) {
-      console.log(payload)
       this.personalDetails.email = payload['tenant_email']
       this.personalDetails.firstName = payload['tenant_first_name']
       this.personalDetails.lastName = payload['tenant_last_name']
