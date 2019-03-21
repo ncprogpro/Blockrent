@@ -222,7 +222,7 @@
                         <v-container>
                           <v-layout column align-end justify-end>
                             <span class="font-weight-bold">Security Deposit Held: </span>
-                            <span class="text-capitalize">{{ property.total_contract_value }}</span>
+                            <span class="text-capitalize">{{ property.total_contract_value }} {{property.currency_type}}</span>
                           </v-layout>
                         </v-container>
                       </v-flex>

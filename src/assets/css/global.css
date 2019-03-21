@@ -228,3 +228,12 @@
 .left-menu .v-icon {
     font-size: 30px;
 }
+
+.remove-padding {
+    padding: 0 !important;
+}
+
+.remove-margin .v-input__append-outer {
+    margin: 0 !important;
+    width: 100px;
+}
