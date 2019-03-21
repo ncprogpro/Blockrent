@@ -9,6 +9,7 @@
 
 .dashboard-toolbar .v-toolbar__content {
     padding-left: 0;
+    padding-right: 0;
 }
 
 .search-application .v-input__control .v-input__slot{
@@ -174,4 +175,56 @@
 .filter-list div[role=listitem],
 .sort-list div[role=listitem]{
     border-bottom: 1px solid black;
+}
+
+.v-badge--overlap .v-badge__badge {
+    top: 0;
+    right: 0;
+}
+
+.menu-cross-logo {
+    height: 100%;
+    width: 80px;
+    background: #FBBA23;
+}
+
+.menu-cross-logo .v-avatar,
+.menu-cross-logo .v-list__tile__avatar,
+.menu-cross-logo .v-list__tile{
+    width: 100%;
+}
+
+.menu-cross-logo .v-list__tile {
+    height: 100%;
+}
+
+.menu-cross-logo .v-list__tile__avatar {
+    display: contents;
+}
+
+.menu-cross-logo .v-list__tile__avatar .v-avatar {
+    width: 100% !important;
+    height: inherit !important;
+}
+
+.badge-toolbar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #424242;
+    color: #FBBA23;
+    border-bottom: solid;
+}
+
+.badge-toolbar .v-icon {
+    color: #FBBA23 !important;
+}
+
+.badge-toolbar .v-badge__badge {
+    background: #f2f2f2 !important;
+    color: #FBBA23;
+}
+
+.left-menu .v-icon {
+    font-size: 30px;
 }

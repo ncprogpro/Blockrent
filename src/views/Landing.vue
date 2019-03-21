@@ -63,7 +63,7 @@
                 <v-label>Username:</v-label>
                 <v-text-field
                   v-model="email"
-                  :rules="emailRules"
+                  :rules="usernameRules"
                   solo
                   single-line
                   required
@@ -120,7 +120,7 @@ export default {
       alert: false,
       email: '',
       password: '',
-      emailRules: [v => !!v || 'E-mail is required', v => /.+@.+/.test(v) || 'E-mail must be valid'],
+      usernameRules: [v => !!v || 'Username is required'],
       passwordRules: [
         v => !!v || 'Password is required',
         v => v.length >= 6 || 'Password must be greater than 6 characters'

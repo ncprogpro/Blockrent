@@ -1,7 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-app light>
     <v-navigation-drawer v-model="drawer" :mini-variant="mini" hide-overlay app clipped dark stateless>
-      <v-list dense>
+      <v-list class="left-menu">
         <v-list-tile to="/registration">
           <v-list-tile-action>
             <v-icon class="yground--text">mdi-checkbox-marked-outline</v-icon>
@@ -21,31 +21,33 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar class="dashboard-toolbar" clipped-left clipped-right fixed app>
-      <v-list-tile avatar>
+      <v-list-tile avatar class="menu-cross-logo">
         <v-list-tile-avatar>
           <v-img :src="require('@/assets/img/Dashboard_logo.svg')"></v-img>
         </v-list-tile-avatar>
       </v-list-tile>
       <v-toolbar-side-icon @click.stop="mini = !mini" class="yground--text"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
-      <v-badge overlap>
-        <span slot="badge">{{ this.updateList.length }}</span>
-        <v-btn icon @click="rightDrawer = !rightDrawer">
-          <v-icon>mdi-bell</v-icon>
+      <div class="badge-toolbar" dark>
+        <v-badge overlap>
+          <span slot="badge">{{ this.updateList.length }}</span>
+          <v-btn icon @click="rightDrawer = !rightDrawer">
+            <v-icon>mdi-bell</v-icon>
+          </v-btn>
+        </v-badge>
+        <v-btn icon>
+          <v-icon size="24">fa-user</v-icon>
         </v-btn>
-      </v-badge>
-      <v-btn icon>
-        <v-icon size="24">fa-user</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon size="24">fa-book</v-icon>
-      </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-settings</v-icon>
-      </v-btn>
-      <v-btn icon @click="submitLogout">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn>
+        <v-btn icon>
+          <v-icon size="24">fa-book</v-icon>
+        </v-btn>
+        <v-btn icon>
+          <v-icon>mdi-settings</v-icon>
+        </v-btn>
+        <v-btn icon @click="submitLogout">
+          <v-icon>mdi-logout</v-icon>
+        </v-btn>
+      </div>
     </v-toolbar>
     <v-navigation-drawer v-model="rightDrawer" app right clipped dark class="update-bar" temporary>
       <v-flex pl-3 style="height: 100%">

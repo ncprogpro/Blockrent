@@ -183,15 +183,21 @@
                   </v-flex>
                   <v-flex xs12 sm4>
                     <v-label>Property Sizes:</v-label>
-                    <v-text-field
-                      v-model="leaseApplicationDetails.propertySize"
-                      single-line
-                      outline
-                      required
-                      class="custom-round inputPrice"
-                      :rules="propertyRule"
-                      type="number"
-                    ></v-text-field>
+                    <div data-v-90cf4252="" class="v-input inputPrice v-text-field v-text-field--single-line v-text-field--enclosed v-text-field--outline theme--dark">
+                      <div class="v-input__control">
+                        <div class="v-input__slot">
+                          <div class="v-text-field__slot">
+                            <input required="required" type="number" />
+                            <div class="v-text-field__suffix">m2</div>
+                          </div>
+                        </div>
+                        <div class="v-text-field__details">
+                          <div class="v-messages theme--dark">
+                            <div class="v-messages__wrapper"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </v-flex>
                   <v-flex xs12 sm4>
                     <v-label>Property Address:</v-label>
@@ -280,6 +286,7 @@
                       class="custom-round inputPrice"
                       type="number"
                       min="1"
+                      max="100"
                       single-line
                       outline
                       required
@@ -350,6 +357,8 @@
                       type="number"
                       single-line
                       outline
+                      return-masked-value
+                      mask="##"
                     ></v-text-field>
                   </v-flex>
                 </v-layout>
